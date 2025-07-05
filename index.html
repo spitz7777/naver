@@ -9,7 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="static/style.css">
   <link rel="icon" href="static/images/logo.jpeg">
-  <script src="config.js"></script>
 </head>
 <body>
   <div class="top-section">
@@ -60,10 +59,8 @@
       e.preventDefault();
       const query = document.getElementById("user-input").value;
       if (query.trim()) {
-        // 설정 파일의 패턴을 사용하여 URL 생성
-        const pattern = URL_CONFIG.pattern;
-        const patternValue = URL_CONFIG.patterns[pattern];
-        window.location.href = `${patternValue}/${encodeURIComponent(query)}`;
+        // 검색 결과 페이지로 이동
+        window.location.href = `search_results.html?q=${encodeURIComponent(query)}`;
       }
     });
 
@@ -73,9 +70,7 @@
         e.preventDefault();
         const query = this.value;
         if (query.trim()) {
-          const pattern = URL_CONFIG.pattern;
-          const patternValue = URL_CONFIG.patterns[pattern];
-          window.location.href = `${patternValue}/${encodeURIComponent(query)}`;
+          window.location.href = `search_results.html?q=${encodeURIComponent(query)}`;
         }
       }
     });
