@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ query }} - NAVER 검색</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/search_results.css">
+  <link rel="icon" href="/static/images/logo.jpeg">
+</head>
+<body class="results-page">
+  <!-- 네이버 검색창 -->
+  <div class="search-section">
+    <div class="search-container">
+      <form id="search-form" action="/search" method="GET" class="search-form">
+        <div class="search-box">
+          <div class="search-input-wrapper">
+            <img src="/static/images/white_logo.png" alt="NAVER" class="search-logo">
+            <input type="text" id="search-input" name="q" value="{{ query }}" autocomplete="off" placeholder="검색어를 입력하세요">
+            <button type="button" class="voice-search-btn" aria-label="음성 검색">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M10 12.5c1.38 0 2.5-1.12 2.5-2.5V4c0-1.38-1.12-2.5-2.5-2.5S7.5 2.62 7.5 4v6c0 1.38 1.12 2.5 2.5 2.5z" fill="#666"/>
+                <path d="M15 8.5c0 2.76-2.24 5-5 5s-5-2.24-5-5H3c0 3.53 2.61 6.43 6 6.92V17h2v-1.58c3.39-.49 6-3.39 6-6.92h-2z" fill="#666"/>
+              </svg>
+            </button>
+          </div>
+          <button type="submit" class="search-button">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M8.5 3a5.5 5.5 0 0 1 4.227 9.02l4.127 4.126a.5.5 0 0 1-.638.765l-.07-.057-4.126-4.127A5.5 5.5 0 1 1 8.5 3Zm0 1a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9Z" fill="#03c75a"/>
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- search_page.png 이미지 -->
+  <div class="image-section">
+    <img src="/static/images/search_page.png" alt="Search Page" class="search-page-image">
+  </div>
+
+  <main class="results-main">
+    <div class="search-results">
+      <!-- ChatGPT 결과가 이미지 하단에 위치 -->
+      <div id="chatgpt-container">
+        <!-- 로딩 스피너 및 초기 메시지 -->
+        <div class="result-item">
+          <div class="result-url">tistory.com</div>
+          <h3 class="result-title"><a href="#">티스토리 페이지 검색</a></h3>
+          <div class="result-snippet">
+            <div class="loading-spinner"></div>
+            <span>답변을 생성 중입니다...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="results-footer">
+    <div class="footer-content">
+      <div class="footer-left">
+        <a href="#" class="footer-link">이용약관</a>
+        <a href="#" class="footer-link">개인정보처리방침</a>
+        <a href="#" class="footer-link">책임의 한계와 법적고지</a>
+        <a href="#" class="footer-link">회원정보 고객센터</a>
+      </div>
+      <div class="footer-right">
+        <a href="#" class="footer-link">ⓒ NAVER Corp.</a>
+      </div>
+    </div>
+  </footer>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const query = "{{ query|safe }}";
+      const container = document.getElementById('chatgpt-container');
+
+      fetch(`/api/chatgpt-search?q=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.reply) {
+            const escapedReply = data.reply.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            const resultHTML = `
+              <div class="result-item">
+                <div class="result-url">tistory.com</div>
+                <h3 class="result-title"><a href="#">티스토리 페이지 검색</a></h3>
+                <div class="result-snippet">${escapedReply.replace(/\\n/g, '<br>')}</div>
+              </div>
+            `;
+            container.innerHTML = resultHTML;
+          } else {
+            throw new Error('Invalid response from server');
+          }
+        })
+        .catch(error => {
+          console.error('ChatGPT 답변 로딩 실패:', error);
+          container.innerHTML = `
+            <div class="result-item">
+              <div class="result-url">tistory.com</div>
+              <h3 class="result-title"><a href="#">티스토리 페이지 검색</a></h3>
+              <div class="result-snippet">답변을 불러오는 데 실패했습니다.</div>
+            </div>
+          `;
+        });
+    });
+  </script>
+</body>
+</html> 
