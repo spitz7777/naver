@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="static/style.css">
   <link rel="stylesheet" href="static/search_results.css">
   <link rel="icon" href="static/images/logo.jpeg">
+  <script src="config.js"></script>
 </head>
 <body class="results-page">
   <!-- 네이버 검색창 -->
@@ -80,6 +81,29 @@
       return urlParams.get(name);
     }
 
+    // URL을 깔끔하게 변경하는 함수
+    function updateURL(query) {
+      // 설정 파일에서 패턴 가져오기
+      const pattern = URL_CONFIG.pattern;
+      const patternValue = URL_CONFIG.patterns[pattern];
+      const cleanURL = `${patternValue}/${encodeURIComponent(query)}`;
+      
+      window.history.pushState({ query: query }, '', cleanURL);
+      document.title = URL_CONFIG.titleFormat.replace('{query}', query);
+    }
+
+    // 브라우저 뒤로가기/앞으로가기 처리
+    window.addEventListener('popstate', function(event) {
+      if (event.state && event.state.query) {
+        // 뒤로가기 시 검색어 복원
+        document.getElementById('search-input').value = event.state.query;
+        callChatGPTAPI(event.state.query);
+             } else {
+         // 홈으로 리다이렉트
+         window.location.href = URL_CONFIG.homeURL;
+       }
+    });
+
     // 페이지 로드 시 실행
     document.addEventListener('DOMContentLoaded', function() {
       const query = getQueryParameter('q');
@@ -88,15 +112,28 @@
 
       // 검색어를 입력창에 표시
       if (query) {
-        searchInput.value = decodeURIComponent(query);
-        document.title = `${decodeURIComponent(query)} - NAVER 검색`;
+        const decodedQuery = decodeURIComponent(query);
+        searchInput.value = decodedQuery;
         
-        // ChatGPT API 호출 (CORS 이슈로 인해 실제로는 작동하지 않을 수 있음)
-        // 실제 배포 시에는 서버리스 함수나 프록시 서버가 필요할 수 있습니다
-        callChatGPTAPI(query);
+        // URL을 깔끔하게 변경
+        updateURL(decodedQuery);
+        
+        // ChatGPT API 호출
+        callChatGPTAPI(decodedQuery);
       } else {
-        // 검색어가 없으면 홈으로 리다이렉트
-        window.location.href = 'index.html';
+        // URL에서 직접 검색어 추출 시도 (예: /search/검색어)
+        const pathSegments = window.location.pathname.split('/');
+        const lastSegment = pathSegments[pathSegments.length - 1];
+        
+        if (lastSegment && lastSegment !== 'search_results.html') {
+          const decodedQuery = decodeURIComponent(lastSegment);
+          searchInput.value = decodedQuery;
+          updateURL(decodedQuery);
+          callChatGPTAPI(decodedQuery);
+        } else {
+          // 검색어가 없으면 홈으로 리다이렉트
+          window.location.href = URL_CONFIG.homeURL;
+        }
       }
 
       // 검색 폼 제출 이벤트
@@ -104,7 +141,9 @@
         e.preventDefault();
         const newQuery = searchInput.value.trim();
         if (newQuery) {
-          window.location.href = `search_results.html?q=${encodeURIComponent(newQuery)}`;
+          // 새로운 검색 시 URL 업데이트
+          updateURL(newQuery);
+          callChatGPTAPI(newQuery);
         }
       });
     });

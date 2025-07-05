@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL 숨김 기법 상세 설명</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .method {
+      border: 1px solid #ddd;
+      margin: 20px 0;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    .warning {
+      background-color: #fff3cd;
+      border: 1px solid #ffeaa7;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 10px 0;
+    }
+    .code {
+      background-color: #f8f9fa;
+      padding: 15px;
+      border-radius: 5px;
+      font-family: 'Courier New', monospace;
+      overflow-x: auto;
+    }
+    .success {
+      background-color: #d4edda;
+      border: 1px solid #c3e6cb;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 10px 0;
+    }
+    .danger {
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>URL 숨김 기법 상세 설명</h1>
+  
+  <div class="warning">
+    <strong>⚠️ 주의사항:</strong> 이 기법들은 대부분 브라우저 보안 정책에 의해 차단되거나 제한됩니다. 
+    실제 서비스에서는 권장되지 않으며, 교육 목적으로만 제공됩니다.
+  </div>
+
+  <h2>1. iframe 기법</h2>
+  <div class="method">
+    <h3>기본 원리</h3>
+    <p>iframe을 사용하여 외부 사이트를 내부에 임베드하는 방법입니다.</p>
+    
+    <div class="code">
+&lt;iframe src="https://www.naver.com" width="100%" height="100vh"&gt;&lt;/iframe&gt;
+    </div>
+    
+    <div class="danger">
+      <strong>문제점:</strong>
+      <ul>
+        <li>X-Frame-Options 헤더로 차단됨</li>
+        <li>보안 정책으로 인해 대부분의 사이트에서 차단</li>
+        <li>사용자에게 혼란을 줄 수 있음</li>
+      </ul>
+    </div>
+    
+    <h3>실제 테스트</h3>
+    <div id="iframe-test">
+      <p>아래 iframe은 대부분 차단됩니다:</p>
+      <iframe src="https://www.naver.com" width="100%" height="400px" style="border: 1px solid #ccc;"></iframe>
+    </div>
+  </div>
+
+  <h2>2. JavaScript 리다이렉트 기법</h2>
+  <div class="method">
+    <h3>기본 원리</h3>
+    <p>JavaScript를 사용하여 페이지 로드 후 URL을 변경하는 방법입니다.</p>
+    
+    <div class="code">
+// 방법 1: window.location.replace()
+window.location.replace('https://www.naver.com');
+
+// 방법 2: window.location.href
+window.location.href = 'https://www.naver.com';
+
+// 방법 3: history.pushState() (제한적)
+history.pushState(null, '', 'https://www.naver.com');
+    </div>
+    
+    <div class="danger">
+      <strong>문제점:</strong>
+      <ul>
+        <li>다른 도메인으로의 pushState는 보안상 차단됨</li>
+        <li>사용자가 원래 사이트로 돌아갈 수 없음</li>
+        <li>브라우저 히스토리가 꼬일 수 있음</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>3. Meta Refresh 기법</h2>
+  <div class="method">
+    <h3>기본 원리</h3>
+    <p>HTML meta 태그를 사용하여 자동 리다이렉트하는 방법입니다.</p>
+    
+    <div class="code">
+&lt;meta http-equiv="refresh" content="0; url=https://www.naver.com"&gt;
+    </div>
+    
+    <div class="danger">
+      <strong>문제점:</strong>
+      <ul>
+        <li>사용자가 리다이렉트를 감지할 수 있음</li>
+        <li>브라우저가 경고를 표시할 수 있음</li>
+        <li>SEO에 부정적 영향</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>4. Proxy 서버 기법</h2>
+  <div class="method">
+    <h3>기본 원리</h3>
+    <p>서버에서 프록시를 통해 외부 사이트의 내용을 가져와서 표시하는 방법입니다.</p>
+    
+    <div class="code">
+// Node.js Express 예시
+app.get('/naver/*', async (req, res) => {
+  try {
+    const response = await fetch('https://www.naver.com' + req.path);
+    const html = await response.text();
+    res.send(html);
+  } catch (error) {
+    res.status(500).send('Error');
+  }
+});
+    </div>
+    
+    <div class="danger">
+      <strong>문제점:</strong>
+      <ul>
+        <li>법적 문제 가능성 (저작권, 상표권)</li>
+        <li>성능 문제</li>
+        <li>상대 경로 문제</li>
+        <li>JavaScript 실행 문제</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>5. Service Worker 기법</h2>
+  <div class="method">
+    <h3>기본 원리</h3>
+    <p>Service Worker를 사용하여 네트워크 요청을 가로채고 조작하는 방법입니다.</p>
+    
+    <div class="code">
+// service-worker.js
+self.addEventListener('fetch', event => {
+  if (event.request.url.includes('naver.com')) {
+    event.respondWith(
+      fetch('https://your-domain.com/proxy-naver')
+    );
+  }
+});
+    </div>
+    
+    <div class="danger">
+      <strong>문제점:</strong>
+      <ul>
+        <li>HTTPS에서만 작동</li>
+        <li>복잡한 구현</li>
+        <li>브라우저 호환성 문제</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>6. 브라우저 확장 프로그램 기법</h2>
+  <div class="method">
+    <h3>기본 원리</h3>
+    <p>브라우저 확장 프로그램을 만들어 URL을 조작하는 방법입니다.</p>
+    
+    <div class="code">
+// manifest.json
+{
+  "manifest_version": 2,
+  "name": "URL Hider",
+  "version": "1.0",
+  "permissions": ["webNavigation", "tabs"],
+  "background": {
+    "scripts": ["background.js"]
+  }
+}
+
+// background.js
+chrome.webNavigation.onBeforeNavigate.addListener(details => {
+  if (details.url.includes('your-site.com')) {
+    chrome.tabs.update(details.tabId, {
+      url: 'https://www.naver.com'
+    });
+  }
+});
+    </div>
+    
+    <div class="danger">
+      <strong>문제점:</strong>
+      <ul>
+        <li>사용자가 확장 프로그램을 설치해야 함</li>
+        <li>브라우저 스토어 승인 필요</li>
+        <li>보안상 위험할 수 있음</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>7. DNS 조작 기법</h2>
+  <div class="method">
+    <h3>기본 원리</h3>
+    <p>DNS 설정을 조작하여 도메인을 다른 IP로 연결하는 방법입니다.</p>
+    
+    <div class="code">
+# hosts 파일 수정 (Windows: C:\Windows\System32\drivers\etc\hosts)
+# Mac/Linux: /etc/hosts
+
+127.0.0.1 www.naver.com
+    </div>
+    
+    <div class="danger">
+      <strong>문제점:</strong>
+      <ul>
+        <li>로컬에서만 작동</li>
+        <li>SSL 인증서 문제</li>
+        <li>법적 문제 가능성</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>8. 실제로 작동하는 대안들</h2>
+  <div class="method">
+    <h3>권장되는 방법들</h3>
+    
+    <div class="success">
+      <strong>✅ 도메인 구매:</strong>
+      <ul>
+        <li>naver-clone.com</li>
+        <li>naver-style.com</li>
+        <li>search-naver.net</li>
+      </ul>
+    </div>
+    
+    <div class="success">
+      <strong>✅ 서브도메인 사용:</strong>
+      <ul>
+        <li>naver.yourdomain.com</li>
+        <li>search.yourdomain.com</li>
+      </ul>
+    </div>
+    
+    <div class="success">
+      <strong>✅ 커스텀 브랜딩:</strong>
+      <ul>
+        <li>자신만의 독창적인 도메인</li>
+        <li>고유한 브랜드 아이덴티티</li>
+        <li>법적 문제 없음</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>9. 기술적 한계</h2>
+  <div class="method">
+    <h3>왜 완전한 URL 숨김이 불가능한가?</h3>
+    
+    <div class="code">
+1. Same-Origin Policy (동일 출처 정책)
+   - 브라우저가 다른 도메인의 리소스 접근을 제한
+
+2. X-Frame-Options
+   - 서버가 iframe 임베딩을 차단
+
+3. Content Security Policy (CSP)
+   - 웹사이트가 리소스 로딩을 제한
+
+4. HSTS (HTTP Strict Transport Security)
+   - HTTPS 강제 적용
+
+5. 브라우저 보안 정책
+   - 사용자 보호를 위한 정책들
+    </div>
+  </div>
+
+  <h2>10. 결론</h2>
+  <div class="method">
+    <div class="warning">
+      <strong>🎯 핵심 메시지:</strong>
+      <p>완전한 URL 숨김은 기술적으로 불가능하며, 시도할 경우 법적 문제가 발생할 수 있습니다. 
+      대신 자신만의 독창적인 도메인과 브랜드를 만드는 것을 권장합니다.</p>
+    </div>
+    
+    <div class="success">
+      <strong>💡 권장사항:</strong>
+      <ol>
+        <li>고유한 도메인 구매</li>
+        <li>독창적인 브랜딩</li>
+        <li>사용자 경험에 집중</li>
+        <li>법적 문제 회피</li>
+      </ol>
+    </div>
+  </div>
+
+  <script>
+    // 실제 테스트용 스크립트
+    console.log('URL 숨김 기법 테스트 페이지가 로드되었습니다.');
+    
+    // iframe 로드 상태 확인
+    document.querySelector('iframe').addEventListener('load', function() {
+      console.log('iframe 로드 완료');
+    });
+    
+    document.querySelector('iframe').addEventListener('error', function() {
+      console.log('iframe 로드 실패 - 보안 정책으로 차단됨');
+    });
+  </script>
+</body>
+</html> 
