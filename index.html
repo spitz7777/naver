@@ -7,20 +7,20 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/style.css">
-  <link rel="icon" href="/static/images/logo.jpeg">
+  <link rel="stylesheet" href="static/style.css">
+  <link rel="icon" href="static/images/logo.jpeg">
 </head>
 <body>
   <div class="top-section">
-    <img src="/static/images/naver_main_up.png" alt="NAVER Top" class="top-image">
+    <img src="static/images/naver_main_up.png" alt="NAVER Top" class="top-image">
   </div>
   
   <main>
     <div class="search-container">
-      <form id="chat-form" class="search-form" action="/search" method="GET">
+      <form id="chat-form" class="search-form">
         <div class="search-box">
           <div class="search-icon">
-            <img src="/static/images/white_logo.png" alt="NAVER" class="search-logo">
+            <img src="static/images/white_logo.png" alt="NAVER" class="search-logo">
           </div>
           <input type="text" id="user-input" name="q" placeholder="검색어를 입력해주세요" autocomplete="off" />
           <div class="mic-icon">
@@ -36,7 +36,7 @@
   </main>
 
   <div class="main-image-section">
-    <img src="/static/images/naver_main.png" alt="NAVER Main" class="main-image">
+    <img src="static/images/naver_main.png" alt="NAVER Main" class="main-image">
   </div>
 
   <footer>
@@ -59,7 +59,19 @@
       e.preventDefault();
       const query = document.getElementById("user-input").value;
       if (query.trim()) {
-        window.location.href = `/search?q=${encodeURIComponent(query)}`;
+        // 검색 결과 페이지로 이동
+        window.location.href = `search_results.html?q=${encodeURIComponent(query)}`;
+      }
+    });
+
+    // Enter 키 이벤트 처리
+    document.getElementById("user-input").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const query = this.value;
+        if (query.trim()) {
+          window.location.href = `search_results.html?q=${encodeURIComponent(query)}`;
+        }
       }
     });
   </script>
