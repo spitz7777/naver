@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, request, jsonify, redirect, url_for
-from openai import OpenAI
+import openai
 import os
 import requests
 import random
@@ -11,7 +11,7 @@ import urllib.parse
 from markdown2 import markdown
 
 app = Flask(__name__)
-client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 def extract_title_from_reply(reply):
     """GPT 응답에서 '제목: (...)' 패턴을 찾아 제목을 추출합니다."""
@@ -166,13 +166,12 @@ def api_chat():
 def get_chatgpt_response(query):
     """네이버 블로그 API를 호출하여 응답을 가져옵니다."""
     try:
-        response = client.chat.completions.create(
-            # model="gpt-3.5-turbo",
-            model="gpt-4o",
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
             messages=[
                 {"role": "system", "content": """너는 AI 전문가야. 물어보는 사항에 대해 전문가적 지식을 답변하고 그에 대한 상세한 설명을 해주세요.
                   문제를 물어보면 그에대한 정답을 말해주세요. 먼저 대답 맨 처음에는 '제목:' 이렇게 해서 대답에 대한 제목을 한문장으로 짧게 요약하고 시작해줘.
-                 답변시 단계별로 설명하고, 필요시 번호나 글머리 기호를 사용해주세요."""},
+                   답변시 단계별로 설명하고, 필요시 번호나 글머리 기호를 사용해주세요."""},
                 {"role": "user", "content": query}
             ],
             max_tokens=2000,  # 최대 토큰 수 증가
@@ -209,8 +208,8 @@ def get_blog_response_with_web(query: str) -> str:
             f"참고용 웹검색 결과:\n{sources_text}"
         )
 
-        response = client.chat.completions.create(
-            model="gpt-4o",
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
             messages=[
                 {"role": "system", "content": system_message},
                 {"role": "user", "content": user_message}
@@ -250,7 +249,7 @@ def get_chat_response(message, original_query, conversation_history):
         # 현재 메시지 추가
         messages.append({"role": "user", "content": message})
         
-        response = client.chat.completions.create(
+        response = openai.ChatCompletion.create(
             model="gpt-4o",
             messages=messages,
             max_tokens=1500,
@@ -358,8 +357,8 @@ def get_chat_response_with_web(message: str, original_query: str, conversation_h
             {"role": "user", "content": guidance}
         ]
 
-        response = client.chat.completions.create(
-            model="gpt-4o",
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
             messages=messages,
             max_tokens=1400,
             temperature=0.4,
