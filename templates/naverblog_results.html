@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ query }} - NAVER 블로그</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="icon" href="/static/images/logo.jpeg">
+  <style>
+    :root {
+      --brand: #03c75a;
+      --text: #222;
+      --text-dim: #666;
+      --muted: #f5f7f9;
+      --border: #e6e8eb;
+      --code-bg: #0f172a;
+      --code-fg: #e2e8f0;
+    }
+
+    html, body { background: #fafafa; }
+    body { font-family: 'Noto Sans KR', 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; color: var(--text); }
+
+    .page-wrap { padding: 32px 16px 60px; }
+
+    .post-card { max-width: 860px; margin: 0 auto; background: #fff; border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 6px 24px rgba(15, 23, 42, 0.06); overflow: hidden; }
+
+    .post-header { padding: 28px 28px 0; border-bottom: 1px solid var(--border); }
+    .post-title { font-size: 2.2rem; line-height: 1.35; font-weight: 700; color: var(--text); margin: 0 0 12px; word-break: keep-all; }
+    .blog-title { 
+      font-size: 1.8rem; 
+      line-height: 1.4; 
+      font-weight: 600; 
+      color: var(--text); 
+      margin: 24px 0 12px; 
+      word-break: keep-all;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+    .user-query { 
+      font-size: 1.06rem; 
+      line-height: 1.6; 
+      color: var(--text-dim); 
+      margin: 0 0 24px; 
+      word-break: keep-all;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    .post-meta { display: flex; align-items: center; gap: 12px; padding-bottom: 22px; color: var(--text-dim); font-size: 0.95rem; }
+    .avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border); }
+    .meta-dot { width: 4px; height: 4px; background: #c8ccd1; border-radius: 50%; display: inline-block; }
+
+    .post-content { padding: 28px; font-size: 1.06rem; line-height: 1.9; color: var(--text); word-break: keep-all; letter-spacing: 0.1px; }
+
+    .post-content h1, .post-content h2, .post-content h3, .post-content h4 { margin-top: 2rem; margin-bottom: 0.9rem; font-weight: 700; letter-spacing: -0.3px; }
+    .post-content h1 { font-size: 1.9rem; }
+    .post-content h2 { font-size: 1.6rem; border-left: 4px solid var(--brand); padding-left: 10px; }
+    .post-content h3 { font-size: 1.25rem; }
+    .post-content p { margin: 0.9rem 0; color: #1f2937; }
+    .post-content ul, .post-content ol { padding-left: 1.25rem; margin: 0.9rem 0; }
+    .post-content li { margin: 0.35rem 0; }
+    .post-content a { color: #2563eb; text-decoration: none; border-bottom: 1px dashed rgba(37,99,235,0.35); }
+    .post-content a:hover { border-bottom-style: solid; }
+
+    .post-content blockquote { margin: 1.2rem 0; padding: 1rem 1.2rem; background: #f8fffb; border-left: 4px solid var(--brand); color: #0f5132; border-radius: 8px; }
+
+    .post-content pre { background: var(--code-bg); color: var(--code-fg); border-radius: 10px; padding: 16px; overflow: auto; border: 1px solid rgba(148,163,184,0.25); }
+    .post-content code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 0.95em; }
+    .post-content :not(pre) > code { background: #f1f5f9; color: #0f172a; padding: 2px 6px; border-radius: 6px; border: 1px solid #e2e8f0; }
+
+    .post-content img { max-width: 100%; height: auto; display: block; margin: 1.2rem auto; border-radius: 10px; box-shadow: 0 8px 24px rgba(2, 6, 23, 0.08); border: 1px solid var(--border); }
+    .post-content figure { margin: 1.2rem 0; }
+    .post-content figcaption { text-align: center; color: var(--text-dim); font-size: 0.92rem; margin-top: 8px; }
+
+    .post-content table { width: 100%; border-collapse: collapse; margin: 1.2rem 0; font-size: 0.98rem; }
+    .post-content th, .post-content td { border: 1px solid var(--border); padding: 10px 12px; text-align: left; }
+    .post-content thead th { background: #f3f4f6; font-weight: 700; }
+    .post-content tbody tr:nth-child(odd) { background: #fafafa; }
+
+    .post-content hr { border: 0; height: 1px; background: linear-gradient(to right, transparent, #e5e7eb, transparent); margin: 2rem 0; }
+
+    .preformatted { white-space: pre-line; }
+
+    .info-bar { display: flex; gap: 8px; flex-wrap: wrap; }
+    .info-chip { background: var(--muted); border: 1px solid var(--border); color: #475569; font-size: 0.86rem; padding: 6px 10px; border-radius: 999px; }
+
+    .post-footer { padding: 0 28px 28px; border-top: 1px solid var(--border); }
+
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+    .loading-box { display: flex; align-items: center; gap: 10px; padding: 16px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 10px; }
+    .loading-spinner { width: 20px; height: 20px; border: 3px solid #e2e8f0; border-top: 3px solid var(--brand); border-radius: 50%; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* 대화 입력창 스타일 */
+    .chat-container { max-width: 860px; margin: 32px auto 0; width: 100%; }
+    .chat-history { background: #fff; border: 1px solid var(--border); border-radius: 14px 14px 0 0; min-height: 200px; max-height: 400px; overflow-y: auto; width: 100%; box-sizing: border-box; }
+    .chat-message { padding: 20px 24px; border-bottom: 1px solid var(--border); }
+    .chat-message:last-child { border-bottom: none; }
+    .chat-message.user { background: #f8fffb; }
+    .chat-message.assistant { background: #fff; }
+    .chat-label { font-size: 0.85rem; font-weight: 600; color: var(--text-dim); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .chat-content { font-size: 1.06rem; line-height: 1.7; color: var(--text); word-break: keep-all; }
+    .chat-input-container { background: #fff; border: 1px solid var(--border); border-top: none; border-radius: 0 0 14px 14px; padding: 20px 24px; width: 100%; box-sizing: border-box; }
+    .chat-input-box { display: flex; gap: 12px; align-items: flex-end; }
+    .chat-input { flex: 1; padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px; font-size: 1rem; line-height: 1.5; resize: none; font-family: inherit; transition: border-color 0.2s; height: 80px; max-height: 120px; }
+    .chat-input:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px rgba(3, 199, 90, 0.1); }
+    .chat-send-btn { padding: 14px 20px; background: var(--brand); color: white; border: none; border-radius: 12px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s; min-width: 80px; }
+    .chat-send-btn:hover { background: #02b851; transform: translateY(-1px); }
+    .chat-send-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+    .chat-empty { padding: 40px 24px; text-align: center; color: var(--text-dim); font-size: 0.95rem; background: #fafafa; }
+  </style>
+</head>
+<body>
+  <main class="page-wrap">
+    <article class="post-card">
+      <header class="post-header">
+        <div class="post-meta">
+          <a href="/search_results" style="text-decoration: none;">
+            <img class="avatar" src="/static/images/blog_logo.png" alt="author" style="cursor: pointer;" />
+          </a>
+          <div> 다람쥐의 AI 블로그</div>
+          <span class="meta-dot"></span>
+          <time class="js-date" aria-label="작성일"></time>
+          <span class="meta-dot"></span>
+          <div class="js-reading-time" aria-label="예상 읽기 시간"></div>
+        </div>
+        <h2 class="blog-title">{{ blog_title }}</h2>
+        <div class="user-query">{{ query }}</div>
+      </header>
+
+      <section class="post-content" id="post-content">
+        {% if reply_html %}
+          {{ reply_html|safe }}
+        {% elif reply %}
+          <div class="preformatted">{{ reply }}</div>
+        {% else %}
+          <div class="loading-box"><span class="loading-spinner" aria-hidden="true"></span><span>댓글을 작성 중입니다...</span></div>
+        {% endif %}
+      </section>
+
+      <footer class="post-footer">
+        <div class="info-bar">
+          <span class="info-chip"># MLops</span>
+          <span class="info-chip"># 경사 하강법</span>
+        </div>
+      </footer>
+    </article>
+  </main>
+
+  <!-- 대화 입력창 -->
+  <div class="chat-container">
+    <div class="chat-history" id="chat-history">
+      <div class="chat-empty">
+        💬 댓글이나 메모를 남겨주세요.!
+      </div>
+    </div>
+    <div class="chat-input-container">
+      <div class="chat-input-box">
+        <textarea 
+          id="chat-input" 
+          class="chat-input" 
+          placeholder="댓글이나 메모를 여기에 남겨주세요..."
+          rows="4"
+        ></textarea>
+        <button id="chat-send-btn" class="chat-send-btn">전송</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-left">
+        <a href="#" class="footer-link">이용약관</a>
+        <a href="#" class="footer-link">개인정보처리방침</a>
+        <a href="#" class="footer-link">책임의 한계와 법적고지</a>
+        <a href="#" class="footer-link">회원정보 고객센터</a>
+      </div>
+      <div class="footer-right">
+        <a href="#" class="footer-link">ⓒ NAVER Corp.</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function setDate(){
+      var el = document.querySelector('.js-date');
+      if(!el) return;
+      try {
+        var now = new Date();
+        el.textContent = now.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+      } catch(e) {}
+    })();
+
+    (function setReadingTime(){
+      var el = document.querySelector('.js-reading-time');
+      var content = document.getElementById('post-content');
+      if(!el || !content) return;
+      var text = content.innerText || content.textContent || '';
+      var chars = text.replace(/\s+/g, ' ').trim().length;
+      var minutes = Math.max(1, Math.round(chars / 600));
+      el.textContent = ` ${minutes}일 전에 작성됨`;
+    })();
+
+    // 대화 기능
+    (function initChat() {
+      const chatInput = document.getElementById('chat-input');
+      const chatSendBtn = document.getElementById('chat-send-btn');
+      const chatHistory = document.getElementById('chat-history');
+      let conversationHistory = [];
+
+      // 자동 높이 조절
+      function autoResize(textarea) {
+        textarea.style.height = 'auto';
+        textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+      }
+
+      // 메시지 추가
+      function addMessage(content, isUser = false) {
+        const isEmpty = chatHistory.querySelector('.chat-empty');
+        if (isEmpty) {
+          isEmpty.remove();
+        }
+
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-message ${isUser ? 'user' : 'assistant'}`;
+        
+        const labelDiv = document.createElement('div');
+        labelDiv.className = 'chat-label';
+        labelDiv.textContent = isUser ? '댓글' : '댓글 답변';
+        
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'chat-content';
+        contentDiv.innerHTML = content;
+        
+        messageDiv.appendChild(labelDiv);
+        messageDiv.appendChild(contentDiv);
+        chatHistory.appendChild(messageDiv);
+        
+        // 스크롤을 맨 아래로
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+      }
+
+      // 로딩 메시지 추가
+      function addLoadingMessage() {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'chat-message assistant loading-message';
+        messageDiv.innerHTML = `
+          <div class="chat-label">댓글 답변</div>
+          <div class="chat-content">
+            <div class="loading-box">
+              <span class="loading-spinner" aria-hidden="true"></span>
+              <span></span>
+            </div>
+          </div>
+        `;
+        chatHistory.appendChild(messageDiv);
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+        return messageDiv;
+      }
+
+      // 메시지 전송
+      async function sendMessage() {
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        // 사용자 메시지 추가
+        addMessage(message, true);
+        conversationHistory.push({ role: 'user', content: message });
+
+        // 입력창 초기화
+        chatInput.value = '';
+        autoResize(chatInput);
+        chatSendBtn.disabled = true;
+
+        // 로딩 메시지 표시
+        const loadingMsg = addLoadingMessage();
+
+        try {
+          const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              message: message,
+              original_query: '{{ query }}',
+              conversation_history: conversationHistory
+            })
+          });
+
+          const data = await response.json();
+          
+          // 로딩 메시지 제거
+          loadingMsg.remove();
+          
+          if (data.error) {
+            addMessage(`죄송합니다. 오류가 발생했습니다: ${data.error}`, false);
+          } else {
+            // Markdown을 HTML로 변환하여 표시
+            addMessage(data.reply_html || data.reply, false);
+            conversationHistory.push({ role: 'assistant', content: data.reply });
+          }
+        } catch (error) {
+          // 로딩 메시지 제거
+          loadingMsg.remove();
+          addMessage('죄송합니다. 서버 연결에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.', false);
+        }
+
+        chatSendBtn.disabled = false;
+      }
+
+      // 이벤트 리스너
+      chatInput.addEventListener('input', function() {
+        autoResize(this);
+      });
+
+      chatInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+
+      chatSendBtn.addEventListener('click', sendMessage);
+    })();
+  </script>
+</body>
+</html>

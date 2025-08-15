@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ query }} - NAVER 검색</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/search_results.css">
+  <link rel="icon" href="/static/images/logo.jpeg">
+</head>
+<body class="results-page">
+  <!-- 네이버 검색창 -->
+  <div class="search-section">
+    <div class="search-container">
+      <form id="search-form" action="/search" method="GET" class="search-form">
+        <div class="search-box">
+          <div class="search-input-wrapper">
+            <a href="/" style="text-decoration: none;">
+              <img src="/static/images/white_logo.png" alt="NAVER" class="search-logo" style="cursor: pointer;">
+            </a>
+            <input type="text" id="search-input" name="q" value="{{ query }}" autocomplete="off" placeholder="검색어를 입력해 주세요.">
+            <button type="button" class="voice-search-btn" aria-label="음성 검색">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M10 12.5c1.38 0 2.5-1.12 2.5-2.5V4c0-1.38-1.12-2.5-2.5-2.5S7.5 2.62 7.5 4v6c0 1.38 1.12 2.5 2.5 2.5z" fill="#666"/>
+                <path d="M15 8.5c0 2.76-2.24 5-5 5s-5-2.24-5-5H3c0 3.53 2.61 6.43 6 6.92V17h2v-1.58c3.39-.49 6-3.39 6-6.92h-2z" fill="#666"/>
+              </svg>
+            </button>
+          </div>
+          <button type="submit" class="search-button">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M8.5 3a5.5 5.5 0 0 1 4.227 9.02l4.127 4.126a.5.5 0 0 1-.638.765l-.07-.057-4.126-4.127A5.5 5.5 0 1 1 8.5 3Zm0 1a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9Z" fill="#03c75a"/>
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- search_page.png 이미지 -->
+  <div class="image-section">
+    <img src="/static/images/search_page_1.png" alt="Search Page" class="search-page-image" id="search-page-image" style="cursor: pointer;">
+  </div>
+
+  <main class="results-main">
+    <div class="search-results">
+      <div class="result-item">
+        <div class="result-url">tistory.com</div>
+        <h3 class="result-title"><a href="http://localhost:8080/naverblog-results?q={{ query }}">티스토리 페이지 검색 - 네이버 블로그 결과 보기</a></h3>
+        <div class="result-snippet">네이버 블로그에서 생성한 답변을 확인하려면 링크를 클릭하세요.</div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="results-footer">
+    <div class="footer-content">
+      <div class="footer-left">
+        <a href="#" class="footer-link">이용약관</a>
+        <a href="#" class="footer-link">개인정보처리방침</a>
+        <a href="#" class="footer-link">책임의 한계와 법적고지</a>
+        <a href="#" class="footer-link">회원정보 고객센터</a>
+      </div>
+      <div class="footer-right">
+        <a href="#" class="footer-link">ⓒ NAVER Corp.</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    let currentPage = 1;
+    const totalPages = 5;
+
+    // 현재 검색어 가져오기 함수
+    function getCurrentQuery() {
+      return document.getElementById('search-input').value.trim();
+    }
+
+    // 이미지 업데이트 함수
+    function updateImage() {
+      const imageElement = document.getElementById('search-page-image');
+      imageElement.src = `/static/images/search_page_${currentPage}.png`;
+    }
+
+    // 검색 폼 제출 처리
+    document.getElementById('search-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const query = getCurrentQuery();
+      if (query) {
+        // URL 업데이트 (페이지 새로고침 없이)
+        window.history.pushState({}, '', `/search?q=${encodeURIComponent(query)}`);
+      }
+    });
+
+    // 돋보기 버튼 클릭 시 이미지 순차 변경
+    document.querySelector('.search-button').addEventListener('click', function(e) {
+      e.preventDefault();
+      // 다음 페이지로 순환
+      currentPage = currentPage % totalPages + 1;
+      updateImage();
+    });
+
+    // 이미지 클릭 시 naverblog로 이동
+    document.getElementById('search-page-image').addEventListener('click', function() {
+      const query = getCurrentQuery();
+      if (query) {
+        window.location.href = `/naverblog-results?q=${encodeURIComponent(query)}`;
+      } else {
+        alert('검색어를 입력해주세요.');
+      }
+    });
+
+    // 키보드 이벤트 처리 (엔터키)
+    document.getElementById('search-input').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        // 돋보기 클릭과 동일한 효과: 이미지 순차 변경
+        currentPage = currentPage % totalPages + 1;
+        updateImage();
+        
+        const query = getCurrentQuery();
+        if (query) {
+          window.history.pushState({}, '', `/search?q=${encodeURIComponent(query)}`);
+        }
+      }
+    });
+
+    // 페이지 로드 시 초기 이미지 설정
+    document.addEventListener('DOMContentLoaded', function() {
+      updateImage();
+    });
+  </script>
+</body>
+</html> 

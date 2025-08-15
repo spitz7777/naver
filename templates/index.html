@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 모델의 정규화(Normalization) 이해하기 - NAVER 블로그</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <!-- <link rel="icon" href="/static/images/logo.jpeg"> -->
+  <style>
+    .blog-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    .blog-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #03c75a;
+    }
+    
+    .blog-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #03c75a;
+      margin-bottom: 10px;
+    }
+    
+    .blog-subtitle {
+      font-size: 1.2rem;
+      color: #666;
+      font-weight: 400;
+    }
+    
+    .blog-content {
+      font-size: 1.1rem;
+    }
+    
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #03c75a;
+      margin: 30px 0 15px 0;
+      padding-left: 10px;
+      border-left: 4px solid #03c75a;
+    }
+    
+    .subsection-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #333;
+      margin: 25px 0 10px 0;
+    }
+    
+    .content-box {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      border-left: 4px solid #03c75a;
+    }
+    
+    .formula {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 15px;
+      margin: 15px 0;
+      text-align: center;
+      font-family: 'Courier New', monospace;
+      font-size: 1.1rem;
+    }
+    
+    .example-box {
+      background: #e8f5e8;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      border: 1px solid #03c75a;
+    }
+    
+    .example-title {
+      font-weight: 600;
+      color: #03c75a;
+      margin-bottom: 10px;
+    }
+    
+    .blog-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 20px 0;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .image-caption {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 10px;
+      font-style: italic;
+    }
+    
+    .highlight {
+      background: #fff3cd;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+    
+    .code-block {
+      background: #f4f4f4;
+      border-radius: 6px;
+      padding: 15px;
+      margin: 15px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.95rem;
+      overflow-x: auto;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin: 40px 0;
+      padding: 20px 0;
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .nav-button {
+      background: #03c75a;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+    
+    .nav-button:hover {
+      background: #02a94a;
+    }
+  </style>
+</head>
+<body>
+  <!-- <div class="top-section">
+    <img src="/static/images/naver_main_up.png" alt="NAVER Top" class="top-image">
+  </div> -->
+  
+  <main>
+    <div class="blog-container">
+      <div class="blog-header">
+        <h1 class="blog-title">AI 모델의 정규화(Normalization) 이해하기</h1>
+        <p class="blog-subtitle">머신러닝과 딥러닝에서 중요한 데이터 전처리 기법</p>
+      </div>
+      
+      <div class="blog-content">
+        <img src="/static/images/ai_image/1.png" alt="AI 모델 정규화 개념도" class="blog-image">
+        <p class="image-caption">정규화는 AI 모델의 성능 향상에 중요한 역할을 합니다</p>
+        
+        <p>안녕하세요! 오늘은 AI 모델에서 매우 중요한 개념인 <span class="highlight">정규화(Normalization)</span>에 대해 자세히 알아보겠습니다. 정규화는 데이터의 스케일을 조정하여 특정 범위로 맞추거나, 벡터의 노름을 1로 만드는 과정입니다.</p>
+        
+        <h2 class="section-title">2. Normalization (정규화)</h2>
+        
+        <div class="content-box">
+          <p><strong>정규화의 핵심:</strong> 결국 각 요소를 벡터의 Norm으로 나누는 것입니다. 이를 통해 데이터의 스케일을 일정하게 맞추고, 모델의 학습 안정성을 높일 수 있습니다.</p>
+        </div>
+        
+        <h3 class="subsection-title">L1 Normalization (정규화)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 벡터의 각 요소를 벡터의 L1 Norm으로 나눕니다. 결과적으로 벡터의 L1 Norm은 1이 됩니다.</p>
+          
+          <div class="formula">
+            <strong>수식:</strong> x̂ = x / ||x||₁
+          </div>
+          
+          <p><strong>특징:</strong> 벡터의 모든 요소의 절댓값 합이 1이 되도록 만듭니다. 데이터의 비율에 중점을 둘 때 유용합니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/2.png" alt="L1 정규화 시각화" class="blog-image">
+        <p class="image-caption">L1 정규화의 개념을 시각적으로 표현</p>
+        
+        <div class="example-box">
+          <div class="example-title">📝 L1 정규화 예시</div>
+          <p><strong>벡터 x = [3, -4, 5]</strong>일 때:</p>
+          <ul>
+            <li>L1 Norm = |3| + |-4| + |5| = 12</li>
+            <li>L1 정규화된 벡터 x̂ = [3/12, -4/12, 5/12] = [0.25, -0.333, 0.417]</li>
+            <li>x̂의 L1 Norm = |0.25| + |-0.333| + |0.417| ≈ 1</li>
+          </ul>
+        </div>
+        
+        <h3 class="subsection-title">L2 Normalization (정규화)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 벡터의 각 요소를 벡터의 L2 Norm으로 나눕니다. 결과적으로 벡터의 L2 Norm은 1이 됩니다. 이를 <span class="highlight">단위 벡터(Unit Vector)</span>라고도 합니다.</p>
+          
+          <div class="formula">
+            <strong>수식:</strong> x̂ = x / ||x||₂
+          </div>
+          
+          <p><strong>특징:</strong> 벡터의 방향을 유지하면서 크기를 1로 만듭니다. 주로 코사인 유사도(Cosine Similarity) 계산 등 벡터 간의 방향성 비교에 사용됩니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/3.png" alt="L2 정규화 시각화" class="blog-image">
+        <p class="image-caption">L2 정규화는 벡터의 방향을 유지하면서 크기를 1로 만듭니다</p>
+        
+        <div class="example-box">
+          <div class="example-title">📝 L2 정규화 예시</div>
+          <p><strong>벡터 x = [3, -4, 5]</strong>일 때:</p>
+          <ul>
+            <li>L2 Norm = √(3² + (-4)² + 5²) = √(9 + 16 + 25) = √50 ≈ 7.07</li>
+            <li>L2 정규화된 벡터 x̂ = [3/√50, -4/√50, 5/√50] ≈ [0.424, -0.566, 0.707]</li>
+            <li>x̂의 L2 Norm = √(0.424² + (-0.566)² + 0.707²) ≈ √(0.180 + 0.320 + 0.500) = √1 = 1</li>
+          </ul>
+        </div>
+        
+        <img src="/static/images/ai_image/4.png" alt="정규화 비교" class="blog-image">
+        <p class="image-caption">L1과 L2 정규화의 차이점 비교</p>
+        
+        <h3 class="subsection-title">실제 적용 예시</h3>
+        
+        <div class="code-block">
+# Python으로 정규화 구현하기
+import numpy as np
+
+def l1_normalize(x):
+    return x / np.sum(np.abs(x))
+
+def l2_normalize(x):
+    return x / np.linalg.norm(x)
+
+# 예시 벡터
+x = np.array([3, -4, 5])
+
+# L1 정규화
+x_l1 = l1_normalize(x)
+print("L1 정규화:", x_l1)
+
+# L2 정규화  
+x_l2 = l2_normalize(x)
+print("L2 정규화:", x_l2)
+        </div>
+        
+        <a href="/search_results" style="text-decoration: none; display: block;">
+          <img src="/static/images/ai_image/7.png" alt="코드 실행 결과" class="blog-image" style="cursor: pointer;">
+        </a>
+        <p class="image-caption">실제 코드로 정규화를 구현한 결과</p>
+        
+        <h3 class="subsection-title">정규화의 장점</h3>
+        
+        <div class="content-box">
+          <ul>
+            <li><strong>학습 안정성:</strong> 특성 간 스케일 차이로 인한 학습 불안정성 해결</li>
+            <li><strong>수렴 속도:</strong> 그래디언트 디센트의 수렴 속도 향상</li>
+            <li><strong>모델 성능:</strong> 전반적인 모델 성능 향상</li>
+            <li><strong>해석 가능성:</strong> 정규화된 특성은 해석하기 쉬움</li>
+          </ul>
+        </div>
+        
+        <img src="/static/images/ai_image/5.png" alt="정규화 효과" class="blog-image">
+        <p class="image-caption">정규화 적용 전후의 모델 성능 비교</p>
+        
+        <img src="/static/images/ai_image/6.png" alt="정규화 요약" class="blog-image">
+        <p class="image-caption">정규화 방법들의 요약 및 비교</p>
+        
+        <div class="nav-buttons">
+          <a href="#" class="nav-button">← 이전 글: 데이터 전처리 기초</a>
+          <a href="#" class="nav-button">다음 글: 배치 정규화 →</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-left">
+        <a href="#" class="footer-link">이용약관</a>
+        <a href="#" class="footer-link">개인정보처리방침</a>
+        <a href="#" class="footer-link">책임의 한계와 법적고지</a>
+        <a href="#" class="footer-link">회원정보 고객센터</a>
+      </div>
+      <div class="footer-right">
+        <a href="#" class="footer-link">ⓒ NAVER Corp.</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
