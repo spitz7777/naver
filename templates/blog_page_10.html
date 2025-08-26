@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> 첫번째 AI 모델의 정규화(Normalization) 이해하기 - NAVER 블로그</title>
+  <title>AI 모델의 정규화 완벽 가이드 - NAVER 블로그</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/style.css">
-  <!-- <link rel="icon" href="/static/images/logo.jpeg"> -->
   <style>
     .blog-container {
       max-width: 800px;
@@ -67,17 +66,6 @@
       border-left: 4px solid #03c75a;
     }
     
-    .formula {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      padding: 15px;
-      margin: 15px 0;
-      text-align: center;
-      font-family: 'Courier New', monospace;
-      font-size: 1.1rem;
-    }
-    
     .example-box {
       background: #e8f5e8;
       border-radius: 8px;
@@ -115,16 +103,6 @@
       font-weight: 500;
     }
     
-    .code-block {
-      background: #f4f4f4;
-      border-radius: 6px;
-      padding: 15px;
-      margin: 15px 0;
-      font-family: 'Courier New', monospace;
-      font-size: 0.95rem;
-      overflow-x: auto;
-    }
-    
     .nav-buttons {
       display: flex;
       justify-content: space-between;
@@ -152,24 +130,20 @@
   </style>
 </head>
 <body>
-  <!-- <div class="top-section">
-    <img src="/static/images/naver_main_up.png" alt="NAVER Top" class="top-image">
-  </div> -->
-  
   <main>
     <div class="blog-container">
       <div class="blog-header">
-        <h1 class="blog-title"> 첫번째 AI 모델의 정규화(Normalization) 이해하기</h1>
+        <h1 class="blog-title">AI 모델의 정규화 완벽 가이드</h1>
         <p class="blog-subtitle">머신러닝과 딥러닝에서 중요한 데이터 전처리 기법</p>
       </div>
       
       <div class="blog-content">
-        <img src="/static/images/ai_image/1.png" alt="AI 모델 정규화 개념도" class="blog-image">
+        <img src="/static/images/ai_image/12.png" alt="AI 모델 정규화 개념도" class="blog-image">
         <p class="image-caption">정규화는 AI 모델의 성능 향상에 중요한 역할을 합니다</p>
         
         <p>안녕하세요! 오늘은 AI 모델에서 매우 중요한 개념인 <span class="highlight">정규화(Normalization)</span>에 대해 자세히 알아보겠습니다. 정규화는 데이터의 스케일을 조정하여 특정 범위로 맞추거나, 벡터의 노름을 1로 만드는 과정입니다.</p>
         
-        <h2 class="section-title">2. Normalization (정규화)</h2>
+        <h2 class="section-title">정규화의 핵심 개념</h2>
         
         <div class="content-box">
           <p><strong>정규화의 핵심:</strong> 결국 각 요소를 벡터의 Norm으로 나누는 것입니다. 이를 통해 데이터의 스케일을 일정하게 맞추고, 모델의 학습 안정성을 높일 수 있습니다.</p>
@@ -180,14 +154,12 @@
         <div class="content-box">
           <p><strong>정의:</strong> 벡터의 각 요소를 벡터의 L1 Norm으로 나눕니다. 결과적으로 벡터의 L1 Norm은 1이 됩니다.</p>
           
-          <div class="formula">
-            <strong>수식:</strong> x̂ = x / ||x||₁
-          </div>
+          <p><strong>수식:</strong> x̂ = x / ||x||₁</p>
           
           <p><strong>특징:</strong> 벡터의 모든 요소의 절댓값 합이 1이 되도록 만듭니다. 데이터의 비율에 중점을 둘 때 유용합니다.</p>
         </div>
         
-        <img src="/static/images/ai_image/2.png" alt="L1 정규화 시각화" class="blog-image">
+        <img src="/static/images/ai_image/13.png" alt="L1 정규화 시각화" class="blog-image">
         <p class="image-caption">L1 정규화의 개념을 시각적으로 표현</p>
         
         <div class="example-box">
@@ -205,14 +177,12 @@
         <div class="content-box">
           <p><strong>정의:</strong> 벡터의 각 요소를 벡터의 L2 Norm으로 나눕니다. 결과적으로 벡터의 L2 Norm은 1이 됩니다. 이를 <span class="highlight">단위 벡터(Unit Vector)</span>라고도 합니다.</p>
           
-          <div class="formula">
-            <strong>수식:</strong> x̂ = x / ||x||₂
-          </div>
+          <p><strong>수식:</strong> x̂ = x / ||x||₂</p>
           
           <p><strong>특징:</strong> 벡터의 방향을 유지하면서 크기를 1로 만듭니다. 주로 코사인 유사도(Cosine Similarity) 계산 등 벡터 간의 방향성 비교에 사용됩니다.</p>
         </div>
         
-        <img src="/static/images/ai_image/3.png" alt="L2 정규화 시각화" class="blog-image">
+        <img src="/static/images/ai_image/14.png" alt="L2 정규화 시각화" class="blog-image">
         <p class="image-caption">L2 정규화는 벡터의 방향을 유지하면서 크기를 1로 만듭니다</p>
         
         <div class="example-box">
@@ -225,13 +195,14 @@
           </ul>
         </div>
         
-        <img src="/static/images/ai_image/4.png" alt="정규화 비교" class="blog-image">
+        <img src="/static/images/ai_image/15.png" alt="정규화 비교" class="blog-image">
         <p class="image-caption">L1과 L2 정규화의 차이점 비교</p>
         
         <h3 class="subsection-title">실제 적용 예시</h3>
         
-        <div class="code-block">
-# Python으로 정규화 구현하기
+        <div class="content-box">
+          <p><strong>Python으로 정규화 구현하기:</strong></p>
+          <pre style="background: #f4f4f4; padding: 15px; border-radius: 6px; overflow-x: auto;">
 import numpy as np
 
 def l1_normalize(x):
@@ -249,12 +220,10 @@ print("L1 정규화:", x_l1)
 
 # L2 정규화  
 x_l2 = l2_normalize(x)
-print("L2 정규화:", x_l2)
+print("L2 정규화:", x_l2)</pre>
         </div>
         
-        <a href="/search_results" style="text-decoration: none; display: block;">
-          <img src="/static/images/ai_image/7.png" alt="코드 실행 결과" class="blog-image" style="cursor: pointer;">
-        </a>
+        <img src="/static/images/ai_image/5.png" alt="코드 실행 결과" class="blog-image">
         <p class="image-caption">실제 코드로 정규화를 구현한 결과</p>
         
         <h3 class="subsection-title">정규화의 장점</h3>
@@ -268,20 +237,69 @@ print("L2 정규화:", x_l2)
           </ul>
         </div>
         
-        <img src="/static/images/ai_image/5.png" alt="정규화 효과" class="blog-image">
+        <img src="/static/images/ai_image/6.png" alt="정규화 효과" class="blog-image">
         <p class="image-caption">정규화 적용 전후의 모델 성능 비교</p>
         
-        <img src="/static/images/ai_image/6.png" alt="정규화 요약" class="blog-image">
+        <h2 class="section-title">정규화 vs 표준화</h2>
+        
+        <div class="content-box">
+          <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+            <tr style="background: #f8f9fa;">
+              <th style="border: 1px solid #ddd; padding: 10px;">구분</th>
+              <th style="border: 1px solid #ddd; padding: 10px;">정규화 (Normalization)</th>
+              <th style="border: 1px solid #ddd; padding: 10px;">표준화 (Standardization)</th>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 10px;">범위</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">[0, 1] 또는 [-1, 1]</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">(-∞, +∞)</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 10px;">평균</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">변화함</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">0</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 10px;">표준편차</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">변화함</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">1</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 10px;">이상치 영향</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">민감함</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">상대적으로 덜 민감함</td>
+            </tr>
+          </table>
+        </div>
+        
+        <h2 class="section-title">정규화의 활용 분야</h2>
+        
+        <div class="content-box">
+          <ul>
+            <li><strong>이미지 처리:</strong> 픽셀 값을 [0, 1] 범위로 정규화</li>
+            <li><strong>자연어 처리:</strong> 단어 임베딩 벡터의 정규화</li>
+            <li><strong>추천 시스템:</strong> 사용자/아이템 벡터의 정규화</li>
+            <li><strong>신경망:</strong> 활성화 함수 입력의 정규화</li>
+          </ul>
+        </div>
+        
+        <img src="/static/images/ai_image/7.png" alt="정규화 요약" class="blog-image">
         <p class="image-caption">정규화 방법들의 요약 및 비교</p>
         
+        <!-- 실제 활용 예시 박스 -->
+        <div id="clipboard-analysis-box" class="example-box" style="display: none; background: #f0f8ff; border-left: 4px solid #1890ff; margin: 30px 0;">
+          <div class="example-title" style="color: #1890ff;">🔍 실제 활용 예시</div>
+          <div id="clipboard-analysis-content"></div>
+        </div>
+        
         <div class="nav-buttons">
-          <a href="/blog_page_10" class="nav-button">← 이전 글: AI 모델의 정규화</a>
-          <a href="/blog_page_1" class="nav-button">다음 글: 텍스트 증강 기법 →</a>
+          <a href="/blog_page_9" class="nav-button">← 이전 글: 딥러닝 학습 방법</a>
+          <a href="/blog_page_1" class="nav-button" onclick="handleNextPage(event, '/blog_page_1')">다음 글: 텍스트 증강 기법 →</a>
         </div>
       </div>
     </div>
-  </main>
-
+    </main>
+  
   <footer>
     <div class="footer-content">
       <div class="footer-left">
@@ -295,5 +313,76 @@ print("L2 정규화:", x_l2)
       </div>
     </div>
   </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const analysisData = localStorage.getItem('clipboardAnalysis');
+      if (analysisData) {
+        try {
+          const result = JSON.parse(analysisData);
+          displayClipboardAnalysis(result.analysis);
+          localStorage.removeItem('clipboardAnalysis');
+        } catch (error) {
+          console.error('분석 결과 파싱 오류:', error);
+        }
+      }
+    });
+
+    function displayClipboardAnalysis(analysis) {
+      const analysisBox = document.getElementById('clipboard-analysis-box');
+      const analysisContent = document.getElementById('clipboard-analysis-content');
+      if (analysisBox && analysisContent) {
+        const formattedAnalysis = analysis.replace(/\n/g, '<br>');
+        analysisContent.innerHTML = `<p style="line-height: 1.6; margin: 0;">${formattedAnalysis}</p>`;
+        analysisBox.style.display = 'block';
+      }
+    }
+
+    async function getClipboardText() {
+      try {
+        if (navigator.clipboard && navigator.clipboard.readText) {
+          try {
+            return await navigator.clipboard.readText();
+          } catch (clipboardError) {
+            const userText = prompt('클립보드 읽기 권한이 없습니다.\n분석하고 싶은 텍스트를 직접 붙여넣어 주세요 (Cmd+V 또는 Ctrl+V):', '');
+            return userText || '';
+          }
+        } else {
+          const userText = prompt('이 브라우저는 클립보드 API를 지원하지 않습니다.\n분석하고 싶은 텍스트를 직접 입력해 주세요:', '');
+          return userText || '';
+        }
+      } catch (error) {
+        return '';
+      }
+    }
+
+    async function handleNextPage(event, nextPageUrl) {
+      event.preventDefault();
+      try {
+        const clipboardText = await getClipboardText();
+        if (clipboardText && clipboardText.trim()) {
+          alert(`텍스트를 발견했습니다!\n\n내용: ${clipboardText.substring(0, 100)}${clipboardText.length > 100 ? '...' : ''}`);
+          
+          const response = await fetch('/api/analyze_clipboard', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: clipboardText })
+          });
+          const result = await response.json();
+          if (result.success) {
+            localStorage.setItem('clipboardAnalysis', JSON.stringify(result));
+            alert('분석 완료! 다음 페이지에서 결과를 확인하세요.');
+          } else {
+            alert('분석 중 오류가 발생했습니다: ' + result.error);
+          }
+        } else {
+          alert('텍스트가 없어서 일반 페이지로 이동합니다.');
+        }
+      } catch (error) {
+        alert('처리 중 오류가 발생했습니다: ' + error.message);
+      }
+      window.location.href = nextPageUrl;
+    }
+  </script>
 </body>
-</html>
+</html> 

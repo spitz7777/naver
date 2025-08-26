@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>그래프 증강 기법 완벽 가이드 - NAVER 블로그</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    .blog-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    .blog-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #03c75a;
+    }
+    
+    .blog-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #03c75a;
+      margin-bottom: 10px;
+    }
+    
+    .blog-subtitle {
+      font-size: 1.2rem;
+      color: #666;
+      font-weight: 400;
+    }
+    
+    .blog-content {
+      font-size: 1.1rem;
+    }
+    
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #03c75a;
+      margin: 30px 0 15px 0;
+      padding-left: 10px;
+      border-left: 4px solid #03c75a;
+    }
+    
+    .subsection-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #333;
+      margin: 25px 0 10px 0;
+    }
+    
+    .content-box {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      border-left: 4px solid #03c75a;
+    }
+    
+    .example-box {
+      background: #e8f5e8;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      border: 1px solid #03c75a;
+    }
+    
+    .example-title {
+      font-weight: 600;
+      color: #03c75a;
+      margin-bottom: 10px;
+    }
+    
+    .blog-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 20px 0;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .image-caption {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 10px;
+      font-style: italic;
+    }
+    
+    .highlight {
+      background: #fff3cd;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin: 40px 0;
+      padding: 20px 0;
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .nav-button {
+      background: #03c75a;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+    
+    .nav-button:hover {
+      background: #02a94a;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="blog-container">
+      <div class="blog-header">
+        <h1 class="blog-title">그래프 증강 기법 완벽 가이드</h1>
+        <p class="blog-subtitle">그래프 신경망에서 데이터 다양성을 확보하는 방법</p>
+      </div>
+      
+      <div class="blog-content">
+        <img src="/static/images/ai_image/27.jpg" alt="그래프 증강 개념도" class="blog-image">
+        <p class="image-caption">그래프 증강은 그래프 신경망의 성능 향상에 중요한 역할을 합니다</p>
+        
+        <p>안녕하세요! 오늘은 <span class="highlight">그래프 증강(Graph Augmentation)</span>에 대해 자세히 알아보겠습니다. 그래프 신경망(GNN)에서 데이터 다양성을 확보하고 모델 성능을 향상시키는 핵심 기술입니다.</p>
+        
+        <h2 class="section-title">그래프 증강의 기본 개념</h2>
+        
+        <div class="content-box">
+          <p><strong>그래프 증강이란:</strong> 기존 그래프의 구조나 속성을 변형하여 새로운 그래프 샘플을 생성하는 기법입니다. 이를 통해 그래프 신경망의 일반화 성능을 향상시킬 수 있습니다.</p>
+        </div>
+        
+        <h3 class="subsection-title">Graph Diffusion (그래프 확산)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> Personalized PageRank(PPR), Heat Kernel 등을 활용해 그래프의 연결 가중치를 재계산합니다.</p>
+          
+          <p><strong>특징:</strong> 장거리 의존성(Long-range dependency)을 강화하고 정보 전달을 원활히 하며, 노드 수를 늘리는 것이 아니라 가중치만 변형합니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/28.jpg" alt="그래프 확산 시각화" class="blog-image">
+        <p class="image-caption">Graph Diffusion을 통한 가중치 재계산</p>
+        
+        <h3 class="subsection-title">Graph Mixup (그래프 혼합)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 두 그래프의 특징(Feature)과 레이블(Label)을 선형 결합하여 새로운 학습 샘플을 생성합니다.</p>
+          
+          <p><strong>특징:</strong> 그래프 분류(Graph Classification) 문제에서 데이터 다양성을 확보하며, 결정 경계를 부드럽게 만들어 일반화 성능을 높입니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/29.png" alt="그래프 혼합 과정" class="blog-image">
+        <p class="image-caption">Graph Mixup을 통한 그래프 합성</p>
+        
+        <h3 class="subsection-title">Node Attribute Shuffling (속성 셔플링)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 노드 특성(Feature)을 무작위로 섞어 속성과 구조의 결합을 교란합니다.</p>
+          
+          <p><strong>특징:</strong> Contrastive Learning에서 "속성 무시 뷰(Attribute-agnostic view)" 생성을 위해 활용되며, 모델이 구조 정보와 속성 정보 모두를 균형 있게 학습하도록 합니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/30.png" alt="노드 속성 셔플링" class="blog-image">
+        <p class="image-caption">Node Attribute Shuffling의 개념</p>
+        
+        <h3 class="subsection-title">Edge Dropout / DropEdge</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 일부 엣지를 무작위로 제거하여 과적합과 오버스무딩(oversmoothing)을 방지합니다.</p>
+          
+          <p><strong>특징:</strong> 그래프의 연결을 희소하게 만들어 학습 안정성을 높이며, Contrastive Learning에서 뷰 생성용 증강 기법으로 사용됩니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/31.png" alt="엣지 드롭아웃" class="blog-image">
+        <p class="image-caption">Edge Dropout을 통한 엣지 제거</p>
+        
+        <h2 class="section-title">그래프 증강의 장점</h2>
+        
+        <div class="content-box">
+          <ul>
+            <li><strong>구조적 다양성:</strong> 다양한 그래프 구조로 모델 학습</li>
+            <li><strong>과적합 방지:</strong> 구조적 변형으로 일반화 성능 향상</li>
+            <li><strong>Robustness 강화:</strong> 불완전한 그래프에 대한 내성 향상</li>
+            <li><strong>Contrastive Learning:</strong> 자기지도 학습에서 효과적</li>
+          </ul>
+        </div>
+        
+        <img src="/static/images/ai_image/32.jpg" alt="그래프 증강 효과" class="blog-image">
+        <p class="image-caption">그래프 증강 적용 전후의 성능 비교</p>
+        
+        <!-- 실제 활용 예시 박스 -->
+        <div id="clipboard-analysis-box" class="example-box" style="display: none; background: #f0f8ff; border-left: 4px solid #1890ff; margin: 30px 0;">
+          <div class="example-title" style="color: #1890ff;">🔍 실제 활용 예시</div>
+          <div id="clipboard-analysis-content"></div>
+        </div>
+        
+        <div class="nav-buttons">
+          <a href="/blog_page_3" class="nav-button">← 이전 글: 오디오 증강 기법</a>
+          <a href="/blog_page_5" class="nav-button" onclick="handleNextPage(event, '/blog_page_5')">다음 글: 학습-제공 편향 →</a>
+        </div>
+      </div>
+    </div>
+    </main>
+  
+  <footer>
+    <div class="footer-content">
+      <div class="footer-left">
+        <a href="#" class="footer-link">이용약관</a>
+        <a href="#" class="footer-link">개인정보처리방침</a>
+        <a href="#" class="footer-link">책임의 한계와 법적고지</a>
+        <a href="#" class="footer-link">회원정보 고객센터</a>
+      </div>
+      <div class="footer-right">
+        <a href="#" class="footer-link">ⓒ NAVER Corp.</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const analysisData = localStorage.getItem('clipboardAnalysis');
+      if (analysisData) {
+        try {
+          const result = JSON.parse(analysisData);
+          displayClipboardAnalysis(result.analysis);
+          localStorage.removeItem('clipboardAnalysis');
+        } catch (error) {
+          console.error('분석 결과 파싱 오류:', error);
+        }
+      }
+    });
+
+    function displayClipboardAnalysis(analysis) {
+      const analysisBox = document.getElementById('clipboard-analysis-box');
+      const analysisContent = document.getElementById('clipboard-analysis-content');
+      if (analysisBox && analysisContent) {
+        const formattedAnalysis = analysis.replace(/\n/g, '<br>');
+        analysisContent.innerHTML = `<p style="line-height: 1.6; margin: 0;">${formattedAnalysis}</p>`;
+        analysisBox.style.display = 'block';
+      }
+    }
+
+    async function getClipboardText() {
+      try {
+        if (navigator.clipboard && navigator.clipboard.readText) {
+          try {
+            return await navigator.clipboard.readText();
+          } catch (clipboardError) {
+            const userText = prompt('클립보드 읽기 권한이 없습니다.\n분석하고 싶은 텍스트를 직접 붙여넣어 주세요 (Cmd+V 또는 Ctrl+V):', '');
+            return userText || '';
+          }
+        } else {
+          const userText = prompt('이 브라우저는 클립보드 API를 지원하지 않습니다.\n분석하고 싶은 텍스트를 직접 입력해 주세요:', '');
+          return userText || '';
+        }
+      } catch (error) {
+        console.log('클립보드 처리 실패:', error);
+        return '';
+      }
+    }
+
+    async function handleNextPage(event, nextPageUrl) {
+      event.preventDefault();
+      try {
+        const clipboardText = await getClipboardText();
+        if (clipboardText && clipboardText.trim()) {
+          alert(`텍스트를 발견했습니다!\n\n내용: ${clipboardText.substring(0, 100)}${clipboardText.length > 100 ? '...' : ''}`);
+          
+          const response = await fetch('/api/analyze_clipboard', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: clipboardText })
+          });
+          const result = await response.json();
+          if (result.success) {
+            localStorage.setItem('clipboardAnalysis', JSON.stringify(result));
+            alert('분석 완료! 다음 페이지에서 결과를 확인하세요.');
+          } else {
+            alert('분석 중 오류가 발생했습니다: ' + result.error);
+          }
+        } else {
+          alert('텍스트가 없어서 일반 페이지로 이동합니다.');
+        }
+      } catch (error) {
+        console.log('전체 처리 실패:', error);
+        alert('처리 중 오류가 발생했습니다: ' + error.message);
+      }
+      window.location.href = nextPageUrl;
+    }
+  </script>
+</body>
+</html> 

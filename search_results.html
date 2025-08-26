@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>검색 결과 - NAVER</title>
+  <link rel="preconnect" href="https://.fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/style.css">
+  <link rel="stylesheet" href="static/search_results.css">
+  <link rel="icon" href="static/images/logo.jpeg">
+</head>
+<body class="results-page">
+  <!-- 네이버 검색창 -->
+  <div class="search-section">
+    <div class="search-container">
+      <form id="search-form" class="search-form">
+        <div class="search-box">
+          <div class="search-input-wrapper">
+            <img src="static/images/white_logo.png" alt="NAVER" class="search-logo">
+            <input type="text" id="search-input" name="q" autocomplete="off" placeholder="검색어를 입력하세요">
+            <button type="button" class="voice-search-btn" aria-label="음성 검색">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M10 12.5c1.38 0 2.5-1.12 2.5-2.5V4c0-1.38-1.12-2.5-2.5-2.5S7.5 2.62 7.5 4v6c0 1.38 1.12 2.5 2.5 2.5z" fill="#666"/>
+                <path d="M15 8.5c0 2.76-2.24 5-5 5s-5-2.24-5-5H3c0 3.53 2.61 6.43 6 6.92V17h2v-1.58c3.39-.49 6-3.39 6-6.92h-2z" fill="#666"/>
+              </svg>
+            </button>
+          </div>
+          <button type="submit" class="search-button">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M8.5 3a5.5 5.5 0 0 1 4.227 9.02l4.127 4.126a.5.5 0 0 1-.638.765l-.07-.057-4.126-4.127A5.5 5.5 0 1 1 8.5 3Zm0 1a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9Z" fill="#03c75a"/>
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- search_page.png 이미지 -->
+  <div class="image-section">
+    <img src="static/images/search_page.png" alt="Search Page" class="search-page-image">
+  </div>
+
+  <main class="results-main">
+    <div class="search-results">
+      <!-- ChatGPT 결과가 이미지 하단에 위치 -->
+      <div id="chatgpt-container">
+        <!-- 로딩 스피너 및 초기 메시지 -->
+        <div class="result-item">
+          <div class="result-url">tistory.com</div>
+          <h3 class="result-title"><a href="#">티스토리 페이지 검색</a></h3>
+          <div class="result-snippet">
+            <div class="loading-spinner"></div>
+            <span>답변을 생성 중입니다...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="results-footer">
+    <div class="footer-content">
+      <div class="footer-left">
+        <a href="#" class="footer-link">이용약관</a>
+        <a href="#" class="footer-link">개인정보처리방침</a>
+        <a href="#" class="footer-link">책임의 한계와 법적고지</a>
+        <a href="#" class="footer-link">회원정보 고객센터</a>
+      </div>
+      <div class="footer-right">
+        <a href="#" class="footer-link">ⓒ NAVER Corp.</a>
+      </div>
+    </div>
+  </footer>
+  
+  <script>
+    // URL에서 검색어 파라미터 가져오기
+    function getQueryParameter(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+
+    // 페이지 로드 시 실행
+    document.addEventListener('DOMContentLoaded', function() {
+      const query = getQueryParameter('q');
+      const searchInput = document.getElementById('search-input');
+      const container = document.getElementById('chatgpt-container');
+
+      // 검색어를 입력창에 표시
+      if (query) {
+        searchInput.value = decodeURIComponent(query);
+        document.title = `${decodeURIComponent(query)} - NAVER 검색`;
+        
+        // ChatGPT API 호출 (CORS 이슈로 인해 실제로는 작동하지 않을 수 있음)
+        // 실제 배포 시에는 서버리스 함수나 프록시 서버가 필요할 수 있습니다
+        callChatGPTAPI(query);
+      } else {
+        // 검색어가 없으면 홈으로 리다이렉트
+        window.location.href = 'index.html';
+      }
+
+      // 검색 폼 제출 이벤트
+      document.getElementById('search-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const newQuery = searchInput.value.trim();
+        if (newQuery) {
+          window.location.href = `search_results.html?q=${encodeURIComponent(newQuery)}`;
+        }
+      });
+    });
+
+    // ChatGPT API 호출 함수
+    async function callChatGPTAPI(query) {
+      const container = document.getElementById('chatgpt-container');
+      console.log('ChatGPT API 호출 시작:', query);
+      
+      try {
+        console.log('프록시 서버로 요청 전송 중...');
+        // 로컬 프록시 서버를 통해 ChatGPT API 호출 (로컬 테스트용)
+        const response = await fetch('http://localhost:8081/api/chatgpt', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            query: query
+          })
+        });
+
+        console.log('응답 상태:', response.status, response.statusText);
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log('응답 데이터:', data);
+          if (data.success) {
+            console.log('ChatGPT 응답 성공, 결과 표시 중...');
+            displayResult(data.reply);
+          } else {
+            throw new Error(data.error || 'API 응답 오류');
+          }
+        } else {
+          const errorText = await response.text();
+          console.error('서버 응답 오류:', errorText);
+          throw new Error(`프록시 서버 호출 실패: ${response.status}`);
+        }
+      } catch (error) {
+        console.error('ChatGPT API 호출 오류:', error);
+        console.log('모의 응답으로 대체...');
+        // API 호출 실패 시 모의 응답 표시
+        displayMockResult(query);
+      }
+    }
+
+    // 모의 응답 표시 함수 (API 호출 실패 시 사용)
+    function displayMockResult(query) {
+      const container = document.getElementById('chatgpt-container');
+      const mockResponses = [
+        `${query}에 대한 상세한 정보를 제공해드리겠습니다. 이 주제는 현대 사회에서 매우 중요한 의미를 가지고 있으며, 다양한 관점에서 접근할 수 있습니다. 전문가들의 연구에 따르면 ${query}는 우리의 일상생활에 깊은 영향을 미치고 있습니다. 특히 최근 몇 년간 ${query}에 대한 관심이 급증하고 있으며, 이는 사회적 변화와 기술적 발전에 기인합니다. ${query}의 역사적 배경을 살펴보면, 초기에는 단순한 개념이었지만 점차 복잡하고 정교한 형태로 발전해왔습니다. 현재 ${query}는 다양한 분야에서 활용되고 있으며, 미래에도 더욱 중요한 역할을 할 것으로 예상됩니다.`,
+        `${query}에 관한 질문을 해주셨네요. 이 주제에 대해 체계적으로 설명드리겠습니다. ${query}는 학문적 관점에서 볼 때 매우 흥미로운 연구 대상이며, 실제 응용 분야에서도 큰 가치를 지니고 있습니다. ${query}의 기본 개념부터 시작하여, 그 발전 과정과 현재 상황, 그리고 미래 전망까지 포괄적으로 다루어보겠습니다. 많은 전문가들이 ${query}의 중요성을 강조하고 있으며, 이는 단순한 트렌드가 아닌 근본적인 변화의 신호로 보입니다. ${query}와 관련된 다양한 의견과 연구 결과를 종합하여 균형 잡힌 시각을 제공하고자 합니다.`,
+        `${query}에 대한 답변을 드리겠습니다. 이 주제는 현재 많은 사람들이 관심을 가지고 있는 핫한 이슈입니다. ${query}의 정의와 특징, 그리고 실제 활용 사례를 통해 이해를 돕겠습니다. ${query}가 우리 사회에 미치는 영향과 그 중요성에 대해 다양한 측면에서 분석해보겠습니다. 특히 최신 기술과의 연관성과 미래 발전 방향에 대해서도 살펴보겠습니다. ${query}에 대한 오해와 편견을 바로잡고, 객관적이고 과학적인 관점에서 접근하여 정확한 정보를 제공하겠습니다.`
+      ];
+      
+      const randomResponse = mockResponses[Math.floor(Math.random() * mockResponses.length)];
+      displayResult(randomResponse);
+    }
+
+    // 결과 표시 함수
+    function displayResult(reply) {
+      const container = document.getElementById('chatgpt-container');
+      const escapedReply = reply.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      const resultHTML = `
+        <div class="result-item">
+          <div class="result-url">tistory.com</div>
+          <h3 class="result-title"><a href="#">티스토리 페이지 검색</a></h3>
+          <div class="result-snippet">${escapedReply.replace(/\n/g, '<br>')}</div>
+        </div>
+      `;
+      container.innerHTML = resultHTML;
+    }
+  </script>
+</body>
+</html> 

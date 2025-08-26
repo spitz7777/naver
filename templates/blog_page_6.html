@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XAI 기법 완벽 가이드 - NAVER 블로그</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    .blog-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    .blog-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #03c75a;
+    }
+    
+    .blog-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #03c75a;
+      margin-bottom: 10px;
+    }
+    
+    .blog-subtitle {
+      font-size: 1.2rem;
+      color: #666;
+      font-weight: 400;
+    }
+    
+    .blog-content {
+      font-size: 1.1rem;
+    }
+    
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #03c75a;
+      margin: 30px 0 15px 0;
+      padding-left: 10px;
+      border-left: 4px solid #03c75a;
+    }
+    
+    .subsection-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #333;
+      margin: 25px 0 10px 0;
+    }
+    
+    .content-box {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      border-left: 4px solid #03c75a;
+    }
+    
+    .example-box {
+      background: #e8f5e8;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      border: 1px solid #03c75a;
+    }
+    
+    .example-title {
+      font-weight: 600;
+      color: #03c75a;
+      margin-bottom: 10px;
+    }
+    
+    .blog-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 20px 0;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .image-caption {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 10px;
+      font-style: italic;
+    }
+    
+    .highlight {
+      background: #fff3cd;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin: 40px 0;
+      padding: 20px 0;
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .nav-button {
+      background: #03c75a;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+    
+    .nav-button:hover {
+      background: #02a94a;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="blog-container">
+      <div class="blog-header">
+        <h1 class="blog-title">XAI 기법 완벽 가이드</h1>
+        <p class="blog-subtitle">설명 가능한 AI의 핵심 기술들</p>
+      </div>
+      
+      <div class="blog-content">
+        <img src="/static/images/ai_image/38.png" alt="XAI 개념도" class="blog-image">
+        <p class="image-caption">XAI는 AI 모델의 의사결정 과정을 이해할 수 있게 해주는 중요한 기술입니다</p>
+        
+        <p>안녕하세요! 오늘은 <span class="highlight">XAI(Explainable AI)</span>에 대해 자세히 알아보겠습니다. AI 모델의 의사결정 과정을 이해하고 해석할 수 있게 해주는 핵심 기술입니다.</p>
+        
+        <h2 class="section-title">XAI의 기본 개념</h2>
+        
+        <div class="content-box">
+          <p><strong>XAI란:</strong> AI 모델의 의사결정 과정을 인간이 이해할 수 있도록 설명하는 기술입니다. 이를 통해 AI의 투명성과 신뢰성을 확보할 수 있습니다.</p>
+        </div>
+        
+        <h3 class="subsection-title">Grad-CAM (Gradient-weighted Class Activation Mapping)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> CNN의 특징맵(feature map)과 클래스 점수의 gradient를 활용해 시각적 중요 영역을 강조합니다.</p>
+          
+          <p><strong>특징:</strong> 기존 학습된 모델 파라미터를 수정하지 않고 사후적(post-hoc) 시각화가 가능하며, ReLU를 적용해 양의 기여(positive contribution)만 강조합니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/39.jpg" alt="Grad-CAM 시각화" class="blog-image">
+        <p class="image-caption">Grad-CAM을 통한 이미지 분류 설명</p>
+        
+        <div class="example-box">
+          <div class="example-title">📝 Grad-CAM 특징</div>
+          <ul>
+            <li>클래스 점수에 대한 특징맵 채널별 기울기를 이용해 중요도를 계산</li>
+            <li>ReLU를 적용하여 예측에 긍정적 영향을 미친 영역만 강조</li>
+            <li>기존 학습된 CNN 모델에 바로 적용 가능</li>
+            <li>주로 비전(이미지) 모델 설명에 활용</li>
+          </ul>
+        </div>
+        
+        <h3 class="subsection-title">LIME (Local Interpretable Model-agnostic Explanations)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 복잡한 모델의 예측을 부분적으로 단순한 대리모델(surrogate model)로 근사합니다.</p>
+          
+          <p><strong>특징:</strong> 특정 샘플 주변에 데이터를 무작위로 생성(perturbation)하고, 원 모델 예측값을 학습 데이터로 사용합니다. Model-agnostic하며 전역보다는 국소(local) 설명에 특화됩니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/40.png" alt="LIME 개념" class="blog-image">
+        <p class="image-caption">LIME의 로컬 설명 과정</p>
+        
+        <h3 class="subsection-title">SHAP (SHapley Additive exPlanations)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 게임 이론의 Shapley Value 기반으로 각 피처의 기여도를 정량화합니다.</p>
+          
+          <p><strong>특징:</strong> 모든 피처 조합을 고려하므로 이론적으로 공정(consistency)하나, 계산량이 큽니다. 모델 특화 최적화(TreeSHAP 등)로 계산 효율성을 확보할 수 있습니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/41.png" alt="SHAP 분석" class="blog-image">
+        <p class="image-caption">SHAP을 통한 피처 중요도 분석</p>
+        
+        <h3 class="subsection-title">CAM (Class Activation Map)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 특정 클래스에 대한 예측을 위해 Global Average Pooling(GAP) 뒤의 fully connected layer 가중치를 이용해 feature map 가중합(weighted sum)을 만듭니다.</p>
+          
+          <p><strong>특징:</strong> GAP 계층이 필요하여 모델 아키텍처 변경이 필요하며, CNN의 마지막 합성곱 계층과 GAP을 통해 클래스별 "어디를 보고 판단했는가?" 시각화합니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/42.jpg" alt="CAM 시각화" class="blog-image">
+        <p class="image-caption">CAM을 통한 클래스별 활성화 영역</p>
+        
+        <h2 class="section-title">XAI 기법 비교</h2>
+        
+        <div class="content-box">
+          <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+            <tr style="background: #f8f9fa;">
+              <th style="border: 1px solid #ddd; padding: 10px;">기법</th>
+              <th style="border: 1px solid #ddd; padding: 10px;">적용 범위</th>
+              <th style="border: 1px solid #ddd; padding: 10px;">설명 범위</th>
+              <th style="border: 1px solid #ddd; padding: 10px;">장점</th>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 10px;">Grad-CAM</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">CNN 기반 비전 모델</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">주로 Local</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">직관적 시각화, 해석 쉬움</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 10px;">LIME</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">Model-agnostic</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">Local</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">범용성, 직관적 Local 설명</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 10px;">SHAP</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">Model-agnostic</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">Local + Global</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">이론적 공정성, Local+Global 가능</td>
+            </tr>
+          </table>
+        </div>
+        
+        <h2 class="section-title">XAI의 중요성</h2>
+        
+        <div class="content-box">
+          <ul>
+            <li><strong>투명성 확보:</strong> AI 모델의 의사결정 과정을 이해할 수 있음</li>
+            <li><strong>신뢰성 향상:</strong> 사용자가 AI의 판단을 신뢰할 수 있음</li>
+            <li><strong>규제 준수:</strong> AI 규제 및 윤리 가이드라인 준수</li>
+            <li><strong>디버깅 용이:</strong> 모델 오류의 원인을 파악할 수 있음</li>
+          </ul>
+        </div>
+        
+        <img src="/static/images/ai_image/43.png" alt="XAI 적용 효과" class="blog-image">
+        <p class="image-caption">XAI 적용을 통한 모델 신뢰성 향상</p>
+        
+        <!-- 실제 활용 예시 박스 -->
+        <div id="clipboard-analysis-box" class="example-box" style="display: none; background: #f0f8ff; border-left: 4px solid #1890ff; margin: 30px 0;">
+          <div class="example-title" style="color: #1890ff;">🔍 실제 활용 예시</div>
+          <div id="clipboard-analysis-content"></div>
+        </div>
+        
+        <div class="nav-buttons">
+          <a href="/blog_page_5" class="nav-button">← 이전 글: 학습-제공 편향</a>
+          <a href="/blog_page_7" class="nav-button" onclick="handleNextPage(event, '/blog_page_7')">다음 글: 데이터 전처리 →</a>
+        </div>
+      </div>
+    </div>
+    </main>
+  
+  <footer>
+    <div class="footer-content">
+      <div class="footer-left">
+        <a href="#" class="footer-link">이용약관</a>
+        <a href="#" class="footer-link">개인정보처리방침</a>
+        <a href="#" class="footer-link">책임의 한계와 법적고지</a>
+        <a href="#" class="footer-link">회원정보 고객센터</a>
+      </div>
+      <div class="footer-right">
+        <a href="#" class="footer-link">ⓒ NAVER Corp.</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const analysisData = localStorage.getItem('clipboardAnalysis');
+      if (analysisData) {
+        try {
+          const result = JSON.parse(analysisData);
+          displayClipboardAnalysis(result.analysis);
+          localStorage.removeItem('clipboardAnalysis');
+        } catch (error) {
+          console.error('분석 결과 파싱 오류:', error);
+        }
+      }
+    });
+
+    function displayClipboardAnalysis(analysis) {
+      const analysisBox = document.getElementById('clipboard-analysis-box');
+      const analysisContent = document.getElementById('clipboard-analysis-content');
+      if (analysisBox && analysisContent) {
+        const formattedAnalysis = analysis.replace(/\n/g, '<br>');
+        analysisContent.innerHTML = `<p style="line-height: 1.6; margin: 0;">${formattedAnalysis}</p>`;
+        analysisBox.style.display = 'block';
+      }
+    }
+
+    async function getClipboardText() {
+      try {
+        if (navigator.clipboard && navigator.clipboard.readText) {
+          try {
+            return await navigator.clipboard.readText();
+          } catch (clipboardError) {
+            const userText = prompt('클립보드 읽기 권한이 없습니다.\n분석하고 싶은 텍스트를 직접 붙여넣어 주세요 (Cmd+V 또는 Ctrl+V):', '');
+            return userText || '';
+          }
+        } else {
+          const userText = prompt('이 브라우저는 클립보드 API를 지원하지 않습니다.\n분석하고 싶은 텍스트를 직접 입력해 주세요:', '');
+          return userText || '';
+        }
+      } catch (error) {
+        return '';
+      }
+    }
+
+    async function handleNextPage(event, nextPageUrl) {
+      event.preventDefault();
+      try {
+        const clipboardText = await getClipboardText();
+        if (clipboardText && clipboardText.trim()) {
+          alert(`텍스트를 발견했습니다!\n\n내용: ${clipboardText.substring(0, 100)}${clipboardText.length > 100 ? '...' : ''}`);
+          
+          const response = await fetch('/api/analyze_clipboard', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: clipboardText })
+          });
+          const result = await response.json();
+          if (result.success) {
+            localStorage.setItem('clipboardAnalysis', JSON.stringify(result));
+            alert('분석 완료! 다음 페이지에서 결과를 확인하세요.');
+          } else {
+            alert('분석 중 오류가 발생했습니다: ' + result.error);
+          }
+        } else {
+          alert('텍스트가 없어서 일반 페이지로 이동합니다.');
+        }
+      } catch (error) {
+        alert('처리 중 오류가 발생했습니다: ' + error.message);
+      }
+      window.location.href = nextPageUrl;
+    }
+  </script>
+</body>
+</html> 

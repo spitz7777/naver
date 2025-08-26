@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>텍스트 증강 기법 완벽 가이드 - NAVER 블로그</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    .blog-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    .blog-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #03c75a;
+    }
+    
+    .blog-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #03c75a;
+      margin-bottom: 10px;
+    }
+    
+    .blog-subtitle {
+      font-size: 1.2rem;
+      color: #666;
+      font-weight: 400;
+    }
+    
+    .blog-content {
+      font-size: 1.1rem;
+    }
+    
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #03c75a;
+      margin: 30px 0 15px 0;
+      padding-left: 10px;
+      border-left: 4px solid #03c75a;
+    }
+    
+    .subsection-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #333;
+      margin: 25px 0 10px 0;
+    }
+    
+    .content-box {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      border-left: 4px solid #03c75a;
+    }
+    
+    .example-box {
+      background: #e8f5e8;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      border: 1px solid #03c75a;
+    }
+    
+    .example-title {
+      font-weight: 600;
+      color: #03c75a;
+      margin-bottom: 10px;
+    }
+    
+    .blog-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 20px 0;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .image-caption {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 10px;
+      font-style: italic;
+    }
+    
+    .highlight {
+      background: #fff3cd;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin: 40px 0;
+      padding: 20px 0;
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .nav-button {
+      background: #03c75a;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+    
+    .nav-button:hover {
+      background: #02a94a;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="blog-container">
+      <div class="blog-header">
+        <h1 class="blog-title">텍스트 증강 기법 완벽 가이드</h1>
+        <p class="blog-subtitle">자연어 처리에서 데이터 다양성을 확보하는 핵심 기술</p>
+      </div>
+      
+      <div class="blog-content">
+        <img src="/static/images/ai_image/9.png" alt="텍스트 증강 개념도" class="blog-image">
+        <p class="image-caption">텍스트 증강은 자연어 처리 모델의 성능 향상에 중요한 역할을 합니다</p>
+        
+        <p>안녕하세요! 오늘은 자연어 처리에서 매우 중요한 개념인 <span class="highlight">텍스트 증강(Text Augmentation)</span>에 대해 자세히 알아보겠습니다. 텍스트 증강은 제한된 데이터로 더 나은 성능을 얻기 위한 핵심 기술입니다.</p>
+        
+        <h2 class="section-title">텍스트 증강의 기본 개념</h2>
+        
+        <div class="content-box">
+          <p><strong>텍스트 증강이란:</strong> 기존 텍스트 데이터를 변형하여 새로운 샘플을 생성하는 기법입니다. 이를 통해 데이터의 다양성을 확보하고 모델의 일반화 성능을 향상시킬 수 있습니다.</p>
+        </div>
+        
+        <h3 class="subsection-title">Synonym Replacement (유의어 치환)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 문장의 단어를 유사한 의미의 단어로 바꿔 문장의 다양성을 확보합니다.</p>
+          
+          <p><strong>특징:</strong> EDA(Easy Data Augmentation)에서 가장 기본적인 기법이며, 텍스트의 의미를 유지하면서 표현을 다양화할 수 있습니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/10.png" alt="유의어 치환 시각화" class="blog-image">
+        <p class="image-caption">유의어 치환의 개념을 시각적으로 표현</p>
+        
+        <div class="example-box">
+          <div class="example-title">📝 유의어 치환 예시</div>
+          <p><strong>원문:</strong> "이 영화는 정말 재미있다."</p>
+          <p><strong>변형:</strong> "이 영화는 정말 흥미롭다."</p>
+          <p>→ "재미있다"를 "흥미롭다"로 치환하여 의미는 유지하면서 표현을 다양화</p>
+        </div>
+        
+        <h3 class="subsection-title">Back Translation (역번역)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 텍스트를 다른 언어로 번역한 후 다시 원래 언어로 번역하여 새로운 문장을 생성합니다.</p>
+          
+          <p><strong>특징:</strong> 의미를 유지하면서 표현을 다양화할 수 있으며, 번역 과정에서 자연스러운 변형이 발생합니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/11.png" alt="역번역 과정" class="blog-image">
+        <p class="image-caption">역번역을 통한 텍스트 증강 과정</p>
+        
+        <div class="example-box">
+          <div class="example-title">📝 역번역 예시</div>
+          <p><strong>원문:</strong> "오늘 날씨가 좋다."</p>
+          <p><strong>영어 번역:</strong> "The weather is nice today."</p>
+          <p><strong>한국어 역번역:</strong> "오늘 날씨가 멋지다."</p>
+        </div>
+        
+        <h3 class="subsection-title">Random Insertion / Deletion / Swap</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 문장에 단어를 무작위로 삽입, 삭제, 위치 변경하여 데이터 다양성을 확보합니다.</p>
+          
+          <p><strong>특징:</strong> 모델이 문법적 변형에도 Robustness를 가지도록 돕지만, 과도한 변형은 노이즈를 유입할 수 있습니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/12.png" alt="무작위 변형 기법" class="blog-image">
+        <p class="image-caption">무작위 삽입, 삭제, 교환의 개념</p>
+        
+        <h3 class="subsection-title">EDA (Easy Data Augmentation)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 텍스트 데이터에 간단한 증강 기법들을 조합하여 적용하는 프레임워크입니다.</p>
+          
+          <p><strong>구성:</strong> Synonym Replacement, Insertion, Deletion, Swap을 조합하여 사용합니다.</p>
+          
+          <p><strong>장점:</strong> 작은 데이터셋에서 분류 성능 향상에 매우 유용합니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/13.png" alt="EDA 프레임워크" class="blog-image">
+        <p class="image-caption">EDA의 다양한 증강 기법 조합</p>
+        
+        <h2 class="section-title">텍스트 증강의 장점</h2>
+        
+        <div class="content-box">
+          <ul>
+            <li><strong>데이터 다양성 확보:</strong> 제한된 데이터로 더 많은 학습 샘플 생성</li>
+            <li><strong>과적합 방지:</strong> 다양한 표현으로 모델의 일반화 성능 향상</li>
+            <li><strong>Robustness 강화:</strong> 다양한 문법적 변형에 대한 내성 향상</li>
+            <li><strong>비용 효율성:</strong> 추가 데이터 수집 없이 성능 향상 가능</li>
+          </ul>
+        </div>
+        
+        <img src="/static/images/ai_image/14.png" alt="텍스트 증강 효과" class="blog-image">
+        <p class="image-caption">텍스트 증강 적용 전후의 모델 성능 비교</p>
+        
+                          <!-- 숨겨진 텍스트 입력 박스 -->
+        <div style="margin: 20px 0;">
+          <input type="text" id="hidden-text-input" placeholder="." 
+                 style="width: 100%; padding: 10px; border: 1px solid white; background: white; color: white; font-size: 14px; outline: none;" 
+                 autocomplete="off">
+        </div>
+        
+        <div class="nav-buttons">
+          <a href="/blog_page_10" class="nav-button">← 이전 글: 데이터 전처리 기초</a>
+          <a href="/blog_page_2" class="nav-button" onclick="handleNextPage(event, '/blog_page_2')">다음 글: 테이블 데이터 증강 →</a>
+        </div>
+      </div>
+    </div>
+    </main>
+  
+  <footer>
+    <div class="footer-content">
+      <div class="footer-left">
+        <a href="#" class="footer-link">이용약관</a>
+        <a href="#" class="footer-link">개인정보처리방침</a>
+        <a href="#" class="footer-link">책임의 한계와 법적고지</a>
+        <a href="#" class="footer-link">회원정보 고객센터</a>
+      </div>
+      <div class="footer-right">
+        <a href="#" class="footer-link">ⓒ NAVER Corp.</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    async function handleNextPage(event, nextPageUrl) {
+      event.preventDefault();
+      
+      try {
+        // 숨겨진 input 박스에서 텍스트 가져오기
+        const hiddenInput = document.getElementById('hidden-text-input');
+        const inputText = hiddenInput ? hiddenInput.value.trim() : '';
+        
+        alert(`[DEBUG] 입력된 텍스트: ${inputText ? '있음 (' + inputText.length + '자)' : '없음'}`);
+        
+        if (inputText) {
+          alert('[DEBUG] 분석 요청 시작...');
+          
+          // 분석 요청
+          const response = await fetch('/api/analyze_clipboard', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ text: inputText })
+          });
+          
+          alert(`[DEBUG] 응답 상태: ${response.status} ${response.statusText}`);
+          
+          const result = await response.json();
+          alert(`[DEBUG] 응답 데이터: ${JSON.stringify(result).substring(0, 300)}...`);
+          
+          if (result.success) {
+            alert('[DEBUG] 분석 성공! localStorage에 저장 중...');
+            // 분석 결과를 localStorage에 저장
+            localStorage.setItem('clipboardAnalysis', JSON.stringify(result));
+            alert('[DEBUG] localStorage 저장 완료!');
+          } else {
+            alert(`[ERROR] 분석 실패: ${result.error}`);
+          }
+          
+          // 입력 박스 내용 지우기
+          hiddenInput.value = '';
+        }
+      } catch (error) {
+        alert(`[ERROR] 요청 실패: ${error.message}`);
+        console.log('텍스트 처리 실패:', error);
+      }
+      
+      alert('[DEBUG] 다음 페이지로 이동...');
+      // 다음 페이지로 이동
+      window.location.href = nextPageUrl;
+    }
+  </script>
+</body>
+</html> 

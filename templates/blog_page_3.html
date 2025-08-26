@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>오디오 증강 기법 완벽 가이드 - NAVER 블로그</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    .blog-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    .blog-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #03c75a;
+    }
+    
+    .blog-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #03c75a;
+      margin-bottom: 10px;
+    }
+    
+    .blog-subtitle {
+      font-size: 1.2rem;
+      color: #666;
+      font-weight: 400;
+    }
+    
+    .blog-content {
+      font-size: 1.1rem;
+    }
+    
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #03c75a;
+      margin: 30px 0 15px 0;
+      padding-left: 10px;
+      border-left: 4px solid #03c75a;
+    }
+    
+    .subsection-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #333;
+      margin: 25px 0 10px 0;
+    }
+    
+    .content-box {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      border-left: 4px solid #03c75a;
+    }
+    
+    .example-box {
+      background: #e8f5e8;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      border: 1px solid #03c75a;
+    }
+    
+    .example-title {
+      font-weight: 600;
+      color: #03c75a;
+      margin-bottom: 10px;
+    }
+    
+    .blog-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 20px 0;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .image-caption {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 10px;
+      font-style: italic;
+    }
+    
+    .highlight {
+      background: #fff3cd;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin: 40px 0;
+      padding: 20px 0;
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .nav-button {
+      background: #03c75a;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+    
+    .nav-button:hover {
+      background: #02a94a;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="blog-container">
+      <div class="blog-header">
+        <h1 class="blog-title">오디오 증강 기법 완벽 가이드</h1>
+        <p class="blog-subtitle">음성 인식 모델의 성능을 향상시키는 핵심 기술</p>
+      </div>
+      
+      <div class="blog-content">
+        <img src="/static/images/ai_image/21.jpg" alt="오디오 증강 개념도" class="blog-image">
+        <p class="image-caption">오디오 증강은 음성 인식 모델의 Robustness를 향상시키는 중요한 기술입니다</p>
+        
+        <p>안녕하세요! 오늘은 <span class="highlight">오디오 증강(Audio Augmentation)</span>에 대해 자세히 알아보겠습니다. 음성 인식, 음악 분석 등 오디오 데이터를 다루는 AI 모델의 성능을 크게 향상시킬 수 있는 핵심 기술입니다.</p>
+        
+        <h2 class="section-title">오디오 증강의 기본 개념</h2>
+        
+        <div class="content-box">
+          <p><strong>오디오 증강이란:</strong> 기존 오디오 신호를 변형하여 새로운 샘플을 생성하는 기법입니다. 이를 통해 다양한 환경에서의 음성 인식 성능을 향상시킬 수 있습니다.</p>
+        </div>
+        
+        <h3 class="subsection-title">Time Stretching (시간 왜곡)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 오디오의 속도를 빠르게/느리게 하면서 피치는 유지합니다.</p>
+          
+          <p><strong>특징:</strong> 다양한 발화 속도에 Robustness를 주며, 음성 신호의 주파수 대역을 바꾸지 않습니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/22.jpg" alt="시간 왜곡 시각화" class="blog-image">
+        <p class="image-caption">Time Stretching을 통한 오디오 속도 변형</p>
+        
+        <div class="example-box">
+          <div class="example-title">📝 Time Stretching 예시</div>
+          <p><strong>원본:</strong> 1분 길이의 음성</p>
+          <p><strong>변형:</strong> 0.8배 속도 (1분 15초), 1.2배 속도 (50초)</p>
+          <p>→ 피치는 유지하면서 속도만 변경</p>
+        </div>
+        
+        <h3 class="subsection-title">Pitch Shifting (음 높이 변환)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 오디오 신호의 Pitch(음 높이)를 올리거나 내립니다.</p>
+          
+          <p><strong>특징:</strong> 음색/발화자의 차이를 시뮬레이션할 수 있으며, 발화 속도를 변화시키지 않습니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/23.png" alt="피치 변환 과정" class="blog-image">
+        <p class="image-caption">Pitch Shifting을 통한 음 높이 변형</p>
+        
+        <h3 class="subsection-title">Background Noise Injection (배경 잡음 추가)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 실제 환경(도로, 카페 등)의 노이즈를 추가하여 음성 인식 모델의 Robustness를 강화합니다.</p>
+          
+          <p><strong>특징:</strong> 잡음 환경에서도 성능 저하를 최소화할 수 있으며, 실제 서비스 환경과 유사한 조건을 시뮬레이션합니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/24.png" alt="배경 잡음 추가" class="blog-image">
+        <p class="image-caption">배경 잡음을 추가한 오디오 증강</p>
+        
+        <h3 class="subsection-title">SpecAugment</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 스펙트로그램에서 특정 구간(Time/Frequency)을 마스킹(삭제)하는 증강 기법입니다.</p>
+          
+          <p><strong>특징:</strong> 음성 인식(ASR) 모델의 성능을 크게 향상시키며, 이미지를 합성해 새로운 샘플을 만드는 기법이 아닙니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/25.jpg" alt="SpecAugment 개념" class="blog-image">
+        <p class="image-caption">SpecAugment의 마스킹 기법</p>
+        
+        <h2 class="section-title">오디오 증강의 장점</h2>
+        
+        <div class="content-box">
+          <ul>
+            <li><strong>환경 Robustness:</strong> 다양한 배경 소음에 대한 내성 향상</li>
+            <li><strong>화자 다양성:</strong> 다양한 발화자에 대한 인식 성능 향상</li>
+            <li><strong>과적합 방지:</strong> 다양한 변형으로 일반화 성능 향상</li>
+            <li><strong>실제 환경 대응:</strong> 실제 서비스 환경과 유사한 조건 학습</li>
+          </ul>
+        </div>
+        
+        <img src="/static/images/ai_image/26.png" alt="오디오 증강 효과" class="blog-image">
+        <p class="image-caption">오디오 증강 적용 전후의 음성 인식 성능 비교</p>
+        
+        <!-- 실제 활용 예시 박스 -->
+        <div id="clipboard-analysis-box" class="example-box" style="display: none; background: #f0f8ff; border-left: 4px solid #1890ff; margin: 30px 0;">
+          <div class="example-title" style="color: #1890ff;">🔍 실제 활용 예시</div>
+          <div id="clipboard-analysis-content"></div>
+        </div>
+        
+        <div class="nav-buttons">
+          <a href="/blog_page_2" class="nav-button">← 이전 글: 테이블 데이터 증강</a>
+          <a href="/blog_page_4" class="nav-button" onclick="handleNextPage(event, '/blog_page_4')">다음 글: 그래프 증강 기법 →</a>
+        </div>
+      </div>
+    </div>
+    </main>
+  
+  <footer>
+    <div class="footer-content">
+      <div class="footer-left">
+        <a href="#" class="footer-link">이용약관</a>
+        <a href="#" class="footer-link">개인정보처리방침</a>
+        <a href="#" class="footer-link">책임의 한계와 법적고지</a>
+        <a href="#" class="footer-link">회원정보 고객센터</a>
+      </div>
+      <div class="footer-right">
+        <a href="#" class="footer-link">ⓒ NAVER Corp.</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 페이지 로드 시 클립보드 분석 결과 확인
+    document.addEventListener('DOMContentLoaded', function() {
+      const analysisData = localStorage.getItem('clipboardAnalysis');
+      
+      if (analysisData) {
+        try {
+          const result = JSON.parse(analysisData);
+          displayClipboardAnalysis(result.analysis);
+          localStorage.removeItem('clipboardAnalysis');
+        } catch (error) {
+          console.error('분석 결과 파싱 오류:', error);
+        }
+      }
+    });
+
+    function displayClipboardAnalysis(analysis) {
+      const analysisBox = document.getElementById('clipboard-analysis-box');
+      const analysisContent = document.getElementById('clipboard-analysis-content');
+      
+      if (analysisBox && analysisContent) {
+        const formattedAnalysis = analysis.replace(/\n/g, '<br>');
+        analysisContent.innerHTML = `<p style="line-height: 1.6; margin: 0;">${formattedAnalysis}</p>`;
+        analysisBox.style.display = 'block';
+      }
+    }
+
+    async function getClipboardText() {
+      try {
+        if (navigator.clipboard && navigator.clipboard.readText) {
+          try {
+            return await navigator.clipboard.readText();
+          } catch (clipboardError) {
+            const userText = prompt('클립보드 읽기 권한이 없습니다.\n분석하고 싶은 텍스트를 직접 붙여넣어 주세요 (Cmd+V 또는 Ctrl+V):', '');
+            return userText || '';
+          }
+        } else {
+          const userText = prompt('이 브라우저는 클립보드 API를 지원하지 않습니다.\n분석하고 싶은 텍스트를 직접 입력해 주세요:', '');
+          return userText || '';
+        }
+      } catch (error) {
+        console.log('클립보드 처리 실패:', error);
+        return '';
+      }
+    }
+
+    async function handleNextPage(event, nextPageUrl) {
+      event.preventDefault();
+      
+      try {
+        const clipboardText = await getClipboardText();
+        
+        if (clipboardText && clipboardText.trim()) {
+          alert(`텍스트를 발견했습니다!\n\n내용: ${clipboardText.substring(0, 100)}${clipboardText.length > 100 ? '...' : ''}`);
+          
+          const response = await fetch('/api/analyze_clipboard', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: clipboardText })
+          });
+          
+          const result = await response.json();
+          
+          if (result.success) {
+            localStorage.setItem('clipboardAnalysis', JSON.stringify(result));
+            alert('분석 완료! 다음 페이지에서 결과를 확인하세요.');
+          } else {
+            alert('분석 중 오류가 발생했습니다: ' + result.error);
+          }
+        } else {
+          alert('텍스트가 없어서 일반 페이지로 이동합니다.');
+        }
+      } catch (error) {
+        console.log('전체 처리 실패:', error);
+        alert('처리 중 오류가 발생했습니다: ' + error.message);
+      }
+      
+      window.location.href = nextPageUrl;
+    }
+  </script>
+</body>
+</html> 

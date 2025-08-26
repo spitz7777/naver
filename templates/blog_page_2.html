@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>테이블 데이터 증강 기법 - NAVER 블로그</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    .blog-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    .blog-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #03c75a;
+    }
+    
+    .blog-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #03c75a;
+      margin-bottom: 10px;
+    }
+    
+    .blog-subtitle {
+      font-size: 1.2rem;
+      color: #666;
+      font-weight: 400;
+    }
+    
+    .blog-content {
+      font-size: 1.1rem;
+    }
+    
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #03c75a;
+      margin: 30px 0 15px 0;
+      padding-left: 10px;
+      border-left: 4px solid #03c75a;
+    }
+    
+    .subsection-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #333;
+      margin: 25px 0 10px 0;
+    }
+    
+    .content-box {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      border-left: 4px solid #03c75a;
+    }
+    
+    .example-box {
+      background: #e8f5e8;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      border: 1px solid #03c75a;
+    }
+    
+    .example-title {
+      font-weight: 600;
+      color: #03c75a;
+      margin-bottom: 10px;
+    }
+    
+    .blog-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 20px 0;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .image-caption {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 10px;
+      font-style: italic;
+    }
+    
+    .highlight {
+      background: #fff3cd;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin: 40px 0;
+      padding: 20px 0;
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .nav-button {
+      background: #03c75a;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+    
+    .nav-button:hover {
+      background: #02a94a;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="blog-container">
+      <div class="blog-header">
+        <h1 class="blog-title">테이블 데이터 증강 기법</h1>
+        <p class="blog-subtitle">구조화된 데이터에서 모델 성능을 향상시키는 방법</p>
+      </div>
+      
+      <div class="blog-content">
+        <img src="/static/images/ai_image/15.png" alt="테이블 데이터 증강 개념도" class="blog-image">
+        <p class="image-caption">테이블 데이터 증강은 구조화된 데이터의 다양성을 확보하는 중요한 기술입니다</p>
+        
+        <p>안녕하세요! 오늘은 <span class="highlight">테이블 데이터 증강(Tabular Data Augmentation)</span>에 대해 자세히 알아보겠습니다. 구조화된 데이터에서도 증강 기법을 통해 모델의 성능을 크게 향상시킬 수 있습니다.</p>
+        
+        <h2 class="section-title">테이블 데이터 증강의 필요성</h2>
+        
+        <div class="content-box">
+          <p><strong>구조화된 데이터의 특징:</strong> 테이블 형태의 데이터는 수치형, 범주형 변수들이 체계적으로 정리되어 있어, 텍스트나 이미지와는 다른 증강 기법이 필요합니다.</p>
+        </div>
+        
+        <h3 class="subsection-title">Noise Injection (노이즈 주입)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 수치형 변수에 작은 노이즈를 추가해 모델의 Robustness를 높입니다.</p>
+          
+          <p><strong>특징:</strong> Regression, Classification 등에서 과적합을 방지하며, 데이터 분포를 고려하여 적절한 크기의 노이즈를 삽입합니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/16.png" alt="노이즈 주입 시각화" class="blog-image">
+        <p class="image-caption">노이즈 주입을 통한 데이터 증강 과정</p>
+        
+        <div class="example-box">
+          <div class="example-title">📝 노이즈 주입 예시</div>
+          <p><strong>원본 데이터:</strong> 나이: 25, 소득: 50000</p>
+          <p><strong>증강 후:</strong> 나이: 25.3, 소득: 50120</p>
+          <p>→ 작은 노이즈를 추가하여 데이터 다양성 확보</p>
+        </div>
+        
+        <h3 class="subsection-title">SMOTE (Synthetic Minority Oversampling Technique)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 소수 클래스 샘플을 최근접 이웃(KNN 기반)으로 합성하여 데이터 불균형을 해결합니다.</p>
+          
+          <p><strong>특징:</strong> 분류(Classification) 문제에서 자주 활용되며, 소수 클래스의 샘플을 인위적으로 늘려 균형을 맞춥니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/17.jpg" alt="SMOTE 알고리즘" class="blog-image">
+        <p class="image-caption">SMOTE를 통한 소수 클래스 샘플 생성 과정</p>
+        
+        <div class="example-box">
+          <div class="example-title">📝 SMOTE 예시</div>
+          <p><strong>문제:</strong> 부정 거래(1%) vs 정상 거래(99%)</p>
+          <p><strong>해결:</strong> 부정 거래 샘플을 KNN 기반으로 합성하여 비율 조정</p>
+        </div>
+        
+        <h3 class="subsection-title">ADASYN (Adaptive Synthetic Sampling)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 결정 경계(Decision Boundary) 근처의 어려운 샘플을 더 많이 생성합니다.</p>
+          
+          <p><strong>특징:</strong> 데이터 불균형 문제를 적응적으로 해결하며, 분류가 어려운 영역에 집중하여 샘플을 생성합니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/18.jpg" alt="ADASYN 개념" class="blog-image">
+        <p class="image-caption">ADASYN의 적응적 샘플링 과정</p>
+        
+        <h3 class="subsection-title">Undersampling / Oversampling</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 다수 클래스 데이터 수를 줄이거나 소수 클래스를 복제하여 데이터 균형을 맞춥니다.</p>
+          
+          <p><strong>특징:</strong> Oversampling은 과적합 위험이 있으므로 주의가 필요하며, 모든 클래스의 분포를 동일하게 만드는 것이 항상 최적은 아닙니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/19.jpg" alt="샘플링 기법 비교" class="blog-image">
+        <p class="image-caption">Undersampling과 Oversampling의 차이점</p>
+        
+        <!-- 실제 활용 예시 박스 (클립보드 분석 결과가 있을 때만 표시) -->
+        <div id="clipboard-analysis-box" class="content-box" style="display: none; background: #f6ffed; border-left: 4px solid #52c41a; margin: 30px 0;">
+          <h3 class="subsection-title" style="color: #52c41a;">🔍 실제 활용 예시</h3>
+          <div id="clipboard-analysis-content"></div>
+        </div>
+        
+        <h2 class="section-title">테이블 데이터 증강의 장점</h2>
+        
+        <div class="content-box">
+          <ul>
+            <li><strong>데이터 불균형 해결:</strong> 소수 클래스 문제를 효과적으로 해결</li>
+            <li><strong>모델 Robustness 향상:</strong> 노이즈에 대한 내성 강화</li>
+            <li><strong>과적합 방지:</strong> 다양한 데이터로 일반화 성능 향상</li>
+            <li><strong>비용 효율성:</strong> 추가 데이터 수집 없이 성능 개선</li>
+          </ul>
+        </div>
+        
+        <img src="/static/images/ai_image/20.jpg" alt="테이블 데이터 증강 효과" class="blog-image">
+        <p class="image-caption">테이블 데이터 증강 적용 전후의 성능 비교</p>
+        
+        <div class="nav-buttons">
+          <a href="/blog_page_1" class="nav-button">← 이전 글: 텍스트 증강 기법</a>
+          <a href="/blog_page_3" class="nav-button" onclick="handleNextPage(event, '/blog_page_3')">다음 글: 오디오 증강 기법 →</a>
+        </div>
+      </div>
+    </div>
+    </main>
+  
+  <footer>
+    <div class="footer-content">
+      <div class="footer-left">
+        <a href="#" class="footer-link">이용약관</a>
+        <a href="#" class="footer-link">개인정보처리방침</a>
+        <a href="#" class="footer-link">책임의 한계와 법적고지</a>
+        <a href="#" class="footer-link">회원정보 고객센터</a>
+      </div>
+      <div class="footer-right">
+        <a href="#" class="footer-link">ⓒ NAVER Corp.</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 페이지 로드 시 클립보드 분석 결과 확인
+    document.addEventListener('DOMContentLoaded', function() {
+      alert('[DEBUG] 페이지 로드됨 - localStorage 확인 중...');
+      
+      const analysisData = localStorage.getItem('clipboardAnalysis');
+      alert(`[DEBUG] localStorage 데이터: ${analysisData ? '있음 (' + analysisData.length + '자)' : '없음'}`);
+      
+      if (analysisData) {
+        try {
+          const result = JSON.parse(analysisData);
+          alert(`[DEBUG] 파싱된 결과: success=${result.success}, analysis 길이=${result.analysis ? result.analysis.length : '없음'}`);
+          
+          displayClipboardAnalysis(result.analysis);
+          alert('[DEBUG] 분석 결과 표시 완료!');
+          
+          // 사용 후 localStorage에서 제거
+          localStorage.removeItem('clipboardAnalysis');
+          alert('[DEBUG] localStorage 정리 완료');
+        } catch (error) {
+          alert(`[ERROR] 분석 결과 파싱 오류: ${error.message}`);
+          console.error('분석 결과 파싱 오류:', error);
+        }
+      } else {
+        alert('[DEBUG] localStorage에 분석 데이터가 없습니다.');
+      }
+    });
+
+    function displayClipboardAnalysis(analysis) {
+      alert(`[DEBUG] displayClipboardAnalysis 호출됨, analysis 길이: ${analysis ? analysis.length : '없음'}`);
+      
+      const analysisBox = document.getElementById('clipboard-analysis-box');
+      const analysisContent = document.getElementById('clipboard-analysis-content');
+      
+      alert(`[DEBUG] DOM 요소 확인: analysisBox=${analysisBox ? '있음' : '없음'}, analysisContent=${analysisContent ? '있음' : '없음'}`);
+      
+      if (analysisBox && analysisContent) {
+        alert('[DEBUG] 분석 결과를 DOM에 삽입 중...');
+        // HTML 형식의 분석 결과를 직접 삽입
+        analysisContent.innerHTML = analysis;
+        analysisBox.style.display = 'block';
+        alert('[DEBUG] DOM 삽입 완료! 박스 표시됨');
+        
+        // 삽입된 내용에 블로그 스타일 적용
+        const paragraphs = analysisContent.querySelectorAll('p');
+        alert(`[DEBUG] 스타일 적용 대상 p 태그 개수: ${paragraphs.length}`);
+        paragraphs.forEach(p => {
+          p.style.lineHeight = '1.6';
+          p.style.marginBottom = '15px';
+          p.style.color = '#333';
+        });
+        alert('[DEBUG] 스타일 적용 완료!');
+      } else {
+        alert('[ERROR] DOM 요소를 찾을 수 없습니다!');
+      }
+    }
+
+    async function handleNextPage(event, nextPageUrl) {
+      event.preventDefault();
+      
+      try {
+        if (navigator.permissions) {
+          const permission = await navigator.permissions.query({name: 'clipboard-read'});
+          console.log('클립보드 권한 상태:', permission.state);
+        }
+        
+        let clipboardText = '';
+        
+        if (navigator.clipboard && navigator.clipboard.readText) {
+          try {
+            clipboardText = await navigator.clipboard.readText();
+            console.log('Clipboard API로 읽기 성공');
+          } catch (clipboardError) {
+            console.log('Clipboard API 실패:', clipboardError);
+            clipboardText = prompt('클립보드 읽기 권한이 없습니다.\n분석하고 싶은 텍스트를 직접 붙여넣어 주세요 (Cmd+V 또는 Ctrl+V):', '');
+            if (clipboardText === null) {
+              clipboardText = '';
+            }
+          }
+        } else {
+          alert('이 브라우저는 클립보드 API를 지원하지 않습니다.');
+          clipboardText = prompt('분석하고 싶은 텍스트를 직접 입력해 주세요:', '');
+          if (clipboardText === null) {
+            clipboardText = '';
+          }
+        }
+        
+        if (clipboardText && clipboardText.trim()) {
+          alert(`텍스트를 발견했습니다!\n\n내용: ${clipboardText.substring(0, 100)}${clipboardText.length > 100 ? '...' : ''}`);
+          
+          const response = await fetch('/api/analyze_clipboard', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ text: clipboardText })
+          });
+          
+          const result = await response.json();
+          
+          if (result.success) {
+            localStorage.setItem('clipboardAnalysis', JSON.stringify(result));
+            alert('분석 완료! 다음 페이지에서 결과를 확인하세요.');
+          } else {
+            alert('분석 중 오류가 발생했습니다: ' + result.error);
+          }
+        } else {
+          alert('텍스트가 없어서 일반 페이지로 이동합니다.');
+        }
+      } catch (error) {
+        console.log('전체 클립보드 처리 실패:', error);
+        alert('클립보드 처리 중 오류가 발생했습니다: ' + error.message);
+      }
+      
+      window.location.href = nextPageUrl;
+    }
+  </script>
+</body>
+</html> 

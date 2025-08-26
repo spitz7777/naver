@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>딥러닝 학습 방법 완벽 가이드 - NAVER 블로그</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    .blog-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    .blog-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #03c75a;
+    }
+    
+    .blog-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #03c75a;
+      margin-bottom: 10px;
+    }
+    
+    .blog-subtitle {
+      font-size: 1.2rem;
+      color: #666;
+      font-weight: 400;
+    }
+    
+    .blog-content {
+      font-size: 1.1rem;
+    }
+    
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #03c75a;
+      margin: 30px 0 15px 0;
+      padding-left: 10px;
+      border-left: 4px solid #03c75a;
+    }
+    
+    .subsection-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #333;
+      margin: 25px 0 10px 0;
+    }
+    
+    .content-box {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      border-left: 4px solid #03c75a;
+    }
+    
+    .example-box {
+      background: #e8f5e8;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      border: 1px solid #03c75a;
+    }
+    
+    .example-title {
+      font-weight: 600;
+      color: #03c75a;
+      margin-bottom: 10px;
+    }
+    
+    .blog-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 20px 0;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .image-caption {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 10px;
+      font-style: italic;
+    }
+    
+    .highlight {
+      background: #fff3cd;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin: 40px 0;
+      padding: 20px 0;
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .nav-button {
+      background: #03c75a;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+    
+    .nav-button:hover {
+      background: #02a94a;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="blog-container">
+      <div class="blog-header">
+        <h1 class="blog-title">딥러닝 학습 방법 완벽 가이드</h1>
+        <p class="blog-subtitle">다양한 학습 패러다임과 방법론</p>
+      </div>
+      
+      <div class="blog-content">
+        <img src="/static/images/ai_image/7.png" alt="딥러닝 학습 방법" class="blog-image">
+        <p class="image-caption">딥러닝의 다양한 학습 방법들을 체계적으로 이해할 수 있습니다</p>
+        
+        <p>안녕하세요! 오늘은 <span class="highlight">딥러닝 학습 방법</span>에 대해 자세히 알아보겠습니다. 딥러닝에는 다양한 학습 패러다임과 방법론이 존재하며, 각각의 특징과 활용 분야가 다릅니다.</p>
+        
+        <h2 class="section-title">1. 학습/추론 패러다임</h2>
+        
+        <h3 class="subsection-title">Zero-shot Learning</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 학습 데이터에 없는 태스크도 프롬프트만으로 수행합니다.</p>
+          
+          <p><strong>특징:</strong> LLM 시대에 핵심 특징이며, 일반화 능력을 강조합니다.</p>
+          
+          <p><strong>예시:</strong> '얼룩말'을 학습하지 않았지만, '말처럼 생기고 줄무늬 있음'을 통해 추론</p>
+        </div>
+        
+        <img src="/static/images/ai_image/8.png" alt="Zero-shot Learning" class="blog-image">
+        <p class="image-caption">Zero-shot Learning의 개념</p>
+        
+        <h3 class="subsection-title">Few-shot Learning</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 소량의 예시만 보고 새로운 태스크를 수행합니다.</p>
+          
+          <p><strong>활용:</strong> Prompt Engineering으로 자주 활용되며, 얼굴 인식, OCR 등에 사용됩니다.</p>
+          
+          <p><strong>대표 모델:</strong> Matching Network, Prototypical Network, GPT with prompt</p>
+        </div>
+        
+        <img src="/static/images/ai_image/9.png" alt="Few-shot Learning" class="blog-image">
+        <p class="image-caption">Few-shot Learning의 예시</p>
+        
+        <h3 class="subsection-title">Instruction Tuning</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 자연어 지시문을 이해하고 수행할 수 있도록 추가 학습합니다.</p>
+          
+          <p><strong>특징:</strong> ChatGPT류 모델 기반으로 사용되며, 다양한 태스크에 대한 지시를 이해할 수 있습니다.</p>
+        </div>
+        
+        <h3 class="subsection-title">RLHF (Reinforcement Learning with Human Feedback)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 사람 피드백 기반 보상 모델을 통해 안전하고 유용한 답변을 생성합니다.</p>
+          
+          <p><strong>활용:</strong> OpenAI, Anthropic 등이 활용하며, AI의 안전성과 유용성을 동시에 확보합니다.</p>
+        </div>
+        
+        <h2 class="section-title">2. 파인튜닝/경량화</h2>
+        
+        <h3 class="subsection-title">LoRA (Low-Rank Adaptation)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 대형 모델 파라미터 전체 학습 대신, 저차원 행렬만 학습하여 효율적 미세조정을 수행합니다.</p>
+          
+          <p><strong>장점:</strong> GPU/메모리 절감, 도메인 특화 모델에 활용 가능합니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/10.png" alt="LoRA 구조" class="blog-image">
+        <p class="image-caption">LoRA의 저차원 적응 구조</p>
+        
+        <h3 class="subsection-title">PEFT (Parameter-Efficient Fine-Tuning)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> LoRA, Prefix Tuning, Adapter 등을 포함하는 개념입니다.</p>
+          
+          <p><strong>특징:</strong> 적은 파라미터로 특정 도메인 맞춤화가 가능합니다.</p>
+        </div>
+        
+        <h3 class="subsection-title">Quantization (양자화)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 가중치를 저정밀도(INT8, FP16 등)로 변환하여 속도/메모리를 절감합니다.</p>
+          
+          <p><strong>활용:</strong> Edge/온디바이스 모델에 활용됩니다.</p>
+        </div>
+        
+        <h3 class="subsection-title">Pruning (가지치기)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 중요도 낮은 파라미터를 제거하여 경량화, 추론속도를 개선합니다.</p>
+        </div>
+        
+        <h3 class="subsection-title">Distillation (지식 증류)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 큰 모델의 지식을 작은 모델(Student)에 전수합니다.</p>
+          
+          <p><strong>목적:</strong> 성능-효율의 절충을 달성합니다.</p>
+        </div>
+        
+        <h2 class="section-title">3. 멀티모달/확장</h2>
+        
+        <h3 class="subsection-title">Multimodal AI</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 텍스트+이미지+음성+영상 통합 처리 (예: GPT-4o, Gemini, Claude Sonnet)</p>
+          
+          <p><strong>활용:</strong> 의료 영상 분석, 음성 비서, 비전-언어 이해에 활용됩니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/11.png" alt="멀티모달 AI" class="blog-image">
+        <p class="image-caption">멀티모달 AI의 다양한 데이터 처리</p>
+        
+        <h3 class="subsection-title">RAG (Retrieval-Augmented Generation)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 검색+생성 결합으로 최신/외부 데이터를 반영합니다.</p>
+          
+          <p><strong>장점:</strong> "Hallucination 줄이고 신뢰성↑"을 달성합니다.</p>
+        </div>
+        
+        <h3 class="subsection-title">Agentic AI (AI Agent)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> LLM이 도구/환경을 제어하며 계획·실행합니다.</p>
+          
+          <p><strong>활용:</strong> AutoGPT, LangChain 기반 워크플로우에 사용됩니다.</p>
+        </div>
+        
+        <h2 class="section-title">4. 모델 아키텍처/인프라</h2>
+        
+        <h3 class="subsection-title">Transformer 최적화</h3>
+        
+        <div class="content-box">
+          <p><strong>개념:</strong> Attention 메커니즘 효율화 (FlashAttention 등)</p>
+          
+          <p><strong>목적:</strong> 더 큰 컨텍스트 윈도우를 지원합니다.</p>
+        </div>
+        
+        <h3 class="subsection-title">Mixture of Experts (MoE)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 일부 전문가 네트워크만 활성화하여 연산 효율+성능을 확보합니다.</p>
+        </div>
+        
+        <h3 class="subsection-title">Sovereign AI / On-device AI</h3>
+        
+        <div class="content-box">
+          <p><strong>개념:</strong> 국가/기업/개인 데이터 주권·보안을 강화하는 트렌드입니다.</p>
+          
+          <p><strong>활용:</strong> 스마트폰·엣지 디바이스 탑재 모델에 사용됩니다.</p>
+        </div>
+        
+        <h2 class="section-title">5. 책임/윤리·보안</h2>
+        
+        <h3 class="subsection-title">RAI (Responsible AI)</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> 편향(Bias), 독성, 개인정보 보호를 대응합니다.</p>
+          
+          <p><strong>중요성:</strong> 기업/정부 AI 규제 대응의 핵심입니다.</p>
+        </div>
+        
+        <h3 class="subsection-title">Watermarking / Model Security</h3>
+        
+        <div class="content-box">
+          <p><strong>정의:</strong> AI 생성물 판별, 저작권·위조를 방지합니다.</p>
+          
+          <p><strong>목적:</strong> AI Output 검증 트렌드입니다.</p>
+        </div>
+        
+        <img src="/static/images/ai_image/6.png" alt="AI 보안" class="blog-image">
+        <p class="image-caption">AI 보안과 윤리의 중요성</p>
+        
+        <h2 class="section-title">딥러닝 학습 방법 요약</h2>
+        
+        <div class="content-box">
+          <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+            <tr style="background: #f8f9fa;">
+              <th style="border: 1px solid #ddd; padding: 10px;">분류</th>
+              <th style="border: 1px solid #ddd; padding: 10px;">주요 기법</th>
+              <th style="border: 1px solid #ddd; padding: 10px;">특징</th>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 10px;">학습 패러다임</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">Zero-shot, Few-shot, Instruction Tuning, RLHF</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">다양한 학습 방식</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 10px;">경량화/튜닝</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">LoRA, PEFT, Quantization, Distillation</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">효율적 모델 최적화</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 10px;">확장</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">Multimodal, RAG, Agentic AI</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">AI 능력 확장</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 10px;">인프라/철학</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">MoE, Sovereign AI, Responsible AI</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">안전하고 책임있는 AI</td>
+            </tr>
+          </table>
+        </div>
+        
+        <!-- 실제 활용 예시 박스 -->
+        <div id="clipboard-analysis-box" class="example-box" style="display: none; background: #f0f8ff; border-left: 4px solid #1890ff; margin: 30px 0;">
+          <div class="example-title" style="color: #1890ff;">🔍 실제 활용 예시</div>
+          <div id="clipboard-analysis-content"></div>
+        </div>
+        
+        <div class="nav-buttons">
+          <a href="/blog_page_8" class="nav-button">← 이전 글: AI 트렌드 2025</a>
+          <a href="/blog_page_10" class="nav-button" onclick="handleNextPage(event, '/blog_page_10')">다음 글: AI 모델의 정규화 →</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-left">
+        <a href="#" class="footer-link">이용약관</a>
+        <a href="#" class="footer-link">개인정보처리방침</a>
+        <a href="#" class="footer-link">책임의 한계와 법적고지</a>
+        <a href="#" class="footer-link">회원정보 고객센터</a>
+      </div>
+      <div class="footer-right">
+        <a href="#" class="footer-link">ⓒ NAVER Corp.</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const analysisData = localStorage.getItem('clipboardAnalysis');
+      if (analysisData) {
+        try {
+          const result = JSON.parse(analysisData);
+          displayClipboardAnalysis(result.analysis);
+          localStorage.removeItem('clipboardAnalysis');
+        } catch (error) {
+          console.error('분석 결과 파싱 오류:', error);
+        }
+      }
+    });
+
+    function displayClipboardAnalysis(analysis) {
+      const analysisBox = document.getElementById('clipboard-analysis-box');
+      const analysisContent = document.getElementById('clipboard-analysis-content');
+      if (analysisBox && analysisContent) {
+        const formattedAnalysis = analysis.replace(/\n/g, '<br>');
+        analysisContent.innerHTML = `<p style="line-height: 1.6; margin: 0;">${formattedAnalysis}</p>`;
+        analysisBox.style.display = 'block';
+      }
+    }
+
+    async function getClipboardText() {
+      try {
+        if (navigator.clipboard && navigator.clipboard.readText) {
+          try {
+            return await navigator.clipboard.readText();
+          } catch (clipboardError) {
+            const userText = prompt('클립보드 읽기 권한이 없습니다.\n분석하고 싶은 텍스트를 직접 붙여넣어 주세요 (Cmd+V 또는 Ctrl+V):', '');
+            return userText || '';
+          }
+        } else {
+          const userText = prompt('이 브라우저는 클립보드 API를 지원하지 않습니다.\n분석하고 싶은 텍스트를 직접 입력해 주세요:', '');
+          return userText || '';
+        }
+      } catch (error) {
+        return '';
+      }
+    }
+
+    async function handleNextPage(event, nextPageUrl) {
+      event.preventDefault();
+      try {
+        const clipboardText = await getClipboardText();
+        if (clipboardText && clipboardText.trim()) {
+          alert(`텍스트를 발견했습니다!\n\n내용: ${clipboardText.substring(0, 100)}${clipboardText.length > 100 ? '...' : ''}`);
+          
+          const response = await fetch('/api/analyze_clipboard', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: clipboardText })
+          });
+          const result = await response.json();
+          if (result.success) {
+            localStorage.setItem('clipboardAnalysis', JSON.stringify(result));
+            alert('분석 완료! 다음 페이지에서 결과를 확인하세요.');
+          } else {
+            alert('분석 중 오류가 발생했습니다: ' + result.error);
+          }
+        } else {
+          alert('텍스트가 없어서 일반 페이지로 이동합니다.');
+        }
+      } catch (error) {
+        alert('처리 중 오류가 발생했습니다: ' + error.message);
+      }
+      window.location.href = nextPageUrl;
+    }
+  </script>
+</body>
+</html> 

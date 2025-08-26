@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>데이터 전처리 완벽 가이드 - NAVER 블로그</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    .blog-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    .blog-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #03c75a;
+    }
+    
+    .blog-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #03c75a;
+      margin-bottom: 10px;
+    }
+    
+    .blog-subtitle {
+      font-size: 1.2rem;
+      color: #666;
+      font-weight: 400;
+    }
+    
+    .blog-content {
+      font-size: 1.1rem;
+    }
+    
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #03c75a;
+      margin: 30px 0 15px 0;
+      padding-left: 10px;
+      border-left: 4px solid #03c75a;
+    }
+    
+    .subsection-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #333;
+      margin: 25px 0 10px 0;
+    }
+    
+    .content-box {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      border-left: 4px solid #03c75a;
+    }
+    
+    .example-box {
+      background: #e8f5e8;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      border: 1px solid #03c75a;
+    }
+    
+    .example-title {
+      font-weight: 600;
+      color: #03c75a;
+      margin-bottom: 10px;
+    }
+    
+    .blog-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 20px 0;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .image-caption {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 10px;
+      font-style: italic;
+    }
+    
+    .highlight {
+      background: #fff3cd;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin: 40px 0;
+      padding: 20px 0;
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .nav-button {
+      background: #03c75a;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+    
+    .nav-button:hover {
+      background: #02a94a;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="blog-container">
+      <div class="blog-header">
+        <h1 class="blog-title">데이터 전처리 완벽 가이드</h1>
+        <p class="blog-subtitle">머신러닝 성능 향상을 위한 핵심 기술</p>
+      </div>
+      
+      <div class="blog-content">
+        <img src="/static/images/ai_image/44.png" alt="데이터 전처리 개념도" class="blog-image">
+        <p class="image-caption">데이터 전처리는 머신러닝 성공의 핵심 요소입니다</p>
+        
+        <p>안녕하세요! 오늘은 <span class="highlight">데이터 전처리(Data Preprocessing)</span>에 대해 자세히 알아보겠습니다. 머신러닝 모델의 성능을 크게 좌우하는 중요한 단계입니다.</p>
+        
+        <h2 class="section-title">데이터 전처리의 중요성</h2>
+        
+        <div class="content-box">
+          <p><strong>데이터 전처리란:</strong> 원본 데이터를 머신러닝 모델이 학습하기 좋은 형태로 변환하는 과정입니다. 이 과정에서 데이터의 품질을 향상시키고 모델의 성능을 최적화할 수 있습니다.</p>
+        </div>
+        
+        <h3 class="subsection-title">스케일링이 필요한 알고리즘</h3>
+        
+        <div class="content-box">
+          <p><strong>거리 기반, 선형 모델, 정규분포 가정:</strong></p>
+          <ul>
+            <li><strong>KNN:</strong> 거리 기반 → Min-Max, Standardization 필요</li>
+            <li><strong>SVM:</strong> 거리/내적 기반 → Min-Max, Standardization 필요</li>
+            <li><strong>K-means:</strong> 거리 기반 → Min-Max, Standardization 필요</li>
+            <li><strong>PCA:</strong> 분산/공분산 기반 → Standardization 필요</li>
+            <li><strong>신경망:</strong> Gradient 안정화 위해 Min-Max, Standardization, Robust Scaling 등 필요</li>
+          </ul>
+        </div>
+        
+        <img src="/static/images/ai_image/45.png" alt="스케일링 필요 알고리즘" class="blog-image">
+        <p class="image-caption">스케일링이 필요한 알고리즘들의 분류</p>
+        
+        <h3 class="subsection-title">스케일에 덜 민감한 알고리즘</h3>
+        
+        <div class="content-box">
+          <p><strong>트리 기반, 규칙 분할:</strong></p>
+          <ul>
+            <li><strong>Decision Tree:</strong> 값의 순서/조건 분할 기반 → Scaling 불필요</li>
+            <li><strong>Random Forest:</strong> 트리 기반 → Scaling 불필요</li>
+            <li><strong>XGBoost:</strong> 트리 기반 → Scaling 불필요</li>
+            <li><strong>LightGBM:</strong> 트리 기반 → Scaling 불필요</li>
+          </ul>
+        </div>
+        
+        <img src="/static/images/ai_image/8.png" alt="트리 기반 알고리즘" class="blog-image">
+        <p class="image-caption">트리 기반 알고리즘은 스케일링이 불필요합니다</p>
+        
+        <h3 class="subsection-title">이상치 탐지 및 처리</h3>
+        
+        <div class="content-box">
+          <h4>탐지 기준</h4>
+          <ul>
+            <li><strong>Z-score (|z|>3):</strong> 정규분포 가정 필요 → 비정규/왜도↑에 취약</li>
+            <li><strong>IQR (Q1−1.5×IQR, Q3+1.5×IQR):</strong> 왜도↑/비대칭 분포에도 강건</li>
+            <li><strong>수정 Z-score:</strong> 왜도·이상치에 더 Robust</li>
+          </ul>
+        </div>
+        
+        <img src="/static/images/ai_image/7.png" alt="이상치 탐지 방법" class="blog-image">
+        <p class="image-caption">다양한 이상치 탐지 방법들</p>
+        
+        <div class="example-box">
+          <div class="example-title">📝 이상치 처리 방법</div>
+          <ul>
+            <li><strong>Winsorizing:</strong> 극단값을 분위수 경계값으로 대체</li>
+            <li><strong>Capping:</strong> 도메인 기반 경계치로 제한</li>
+            <li><strong>Trimming/Removal:</strong> 이상치 제거 (명백한 오류값일 때만)</li>
+            <li><strong>Domain Knowledge:</strong> 임상 기준·공학 스펙 등 실무적 기준 반영</li>
+          </ul>
+        </div>
+        
+        <h3 class="subsection-title">결측치 처리</h3>
+        
+        <div class="content-box">
+          <h4>단순 대체 방법</h4>
+          <ul>
+            <li><strong>평균 대체:</strong> 계산 매우 단순, 빠름 (왜도 분포에서는 왜곡 가능)</li>
+            <li><strong>중앙값 대체:</strong> 왜도↑ 분포에서 안정적, 분포 왜곡 최소화</li>
+            <li><strong>최빈값 대체:</strong> 범주형 변수에 자주 사용</li>
+            <li><strong>무작위 대체:</strong> 분산 보존하지만 데이터 일관성 낮음</li>
+          </ul>
+        </div>
+        
+        <img src="/static/images/ai_image/5.png" alt="결측치 처리 방법" class="blog-image">
+        <p class="image-caption">결측치 처리의 다양한 방법들</p>
+        
+        <div class="content-box">
+          <h4>예측 기반 대체 방법</h4>
+          <ul>
+            <li><strong>KNN Imputation:</strong> 유사한 K개의 이웃을 찾아 평균/중앙값으로 대체</li>
+            <li><strong>회귀 Imputation:</strong> 다른 변수 기반 회귀 모델로 예측</li>
+          </ul>
+        </div>
+        
+        <h2 class="section-title">데이터 전처리의 장점</h2>
+        
+        <div class="content-box">
+          <ul>
+            <li><strong>모델 성능 향상:</strong> 적절한 전처리로 모델 성능 크게 개선</li>
+            <li><strong>학습 안정성:</strong> 수렴 속도 향상 및 안정적인 학습</li>
+            <li><strong>해석 가능성:</strong> 전처리된 특성은 해석하기 쉬움</li>
+            <li><strong>일반화 성능:</strong> 과적합 방지 및 일반화 능력 향상</li>
+          </ul>
+        </div>
+        
+        <img src="/static/images/ai_image/6.png" alt="데이터 전처리 효과" class="blog-image">
+        <p class="image-caption">데이터 전처리 적용 전후의 모델 성능 비교</p>
+        
+        <!-- 실제 활용 예시 박스 -->
+        <div id="clipboard-analysis-box" class="example-box" style="display: none; background: #f0f8ff; border-left: 4px solid #1890ff; margin: 30px 0;">
+          <div class="example-title" style="color: #1890ff;">🔍 실제 활용 예시</div>
+          <div id="clipboard-analysis-content"></div>
+        </div>
+        
+        <div class="nav-buttons">
+          <a href="/blog_page_6" class="nav-button">← 이전 글: XAI 기법</a>
+          <a href="/blog_page_8" class="nav-button" onclick="handleNextPage(event, '/blog_page_8')">다음 글: AI 트렌드 2025 →</a>
+        </div>
+      </div>
+    </div>
+    </main>
+  
+  <footer>
+    <div class="footer-content">
+      <div class="footer-left">
+        <a href="#" class="footer-link">이용약관</a>
+        <a href="#" class="footer-link">개인정보처리방침</a>
+        <a href="#" class="footer-link">책임의 한계와 법적고지</a>
+        <a href="#" class="footer-link">회원정보 고객센터</a>
+      </div>
+      <div class="footer-right">
+        <a href="#" class="footer-link">ⓒ NAVER Corp.</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const analysisData = localStorage.getItem('clipboardAnalysis');
+      if (analysisData) {
+        try {
+          const result = JSON.parse(analysisData);
+          displayClipboardAnalysis(result.analysis);
+          localStorage.removeItem('clipboardAnalysis');
+        } catch (error) {
+          console.error('분석 결과 파싱 오류:', error);
+        }
+      }
+    });
+
+    function displayClipboardAnalysis(analysis) {
+      const analysisBox = document.getElementById('clipboard-analysis-box');
+      const analysisContent = document.getElementById('clipboard-analysis-content');
+      if (analysisBox && analysisContent) {
+        const formattedAnalysis = analysis.replace(/\n/g, '<br>');
+        analysisContent.innerHTML = `<p style="line-height: 1.6; margin: 0;">${formattedAnalysis}</p>`;
+        analysisBox.style.display = 'block';
+      }
+    }
+
+    async function getClipboardText() {
+      try {
+        if (navigator.clipboard && navigator.clipboard.readText) {
+          try {
+            return await navigator.clipboard.readText();
+          } catch (clipboardError) {
+            const userText = prompt('클립보드 읽기 권한이 없습니다.\n분석하고 싶은 텍스트를 직접 붙여넣어 주세요 (Cmd+V 또는 Ctrl+V):', '');
+            return userText || '';
+          }
+        } else {
+          const userText = prompt('이 브라우저는 클립보드 API를 지원하지 않습니다.\n분석하고 싶은 텍스트를 직접 입력해 주세요:', '');
+          return userText || '';
+        }
+      } catch (error) {
+        return '';
+      }
+    }
+
+    async function handleNextPage(event, nextPageUrl) {
+      event.preventDefault();
+      try {
+        const clipboardText = await getClipboardText();
+        if (clipboardText && clipboardText.trim()) {
+          alert(`텍스트를 발견했습니다!\n\n내용: ${clipboardText.substring(0, 100)}${clipboardText.length > 100 ? '...' : ''}`);
+          
+          const response = await fetch('/api/analyze_clipboard', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: clipboardText })
+          });
+          const result = await response.json();
+          if (result.success) {
+            localStorage.setItem('clipboardAnalysis', JSON.stringify(result));
+            alert('분석 완료! 다음 페이지에서 결과를 확인하세요.');
+          } else {
+            alert('분석 중 오류가 발생했습니다: ' + result.error);
+          }
+        } else {
+          alert('텍스트가 없어서 일반 페이지로 이동합니다.');
+        }
+      } catch (error) {
+        alert('처리 중 오류가 발생했습니다: ' + error.message);
+      }
+      window.location.href = nextPageUrl;
+    }
+  </script>
+</body>
+</html> 
