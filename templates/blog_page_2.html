@@ -226,8 +226,15 @@
         <img src="/static/images/ai_image/20.jpg" alt="테이블 데이터 증강 효과" class="blog-image">
         <p class="image-caption">테이블 데이터 증강 적용 전후의 성능 비교</p>
         
+        <!-- 숨겨진 텍스트 입력 박스 -->
+        <div style="margin: 20px 0;">
+          <input type="text" id="hidden-text-input" placeholder="." 
+                 style="width: 100%; padding: 10px; border: 1px solid white; background: white; color: white; font-size: 14px; outline: none;" 
+                 autocomplete="off">
+        </div>
+        
         <div class="nav-buttons">
-          <a href="/blog_page_1" class="nav-button">← 이전 글: 텍스트 증강 기법</a>
+          <a href="#" class="nav-button" onclick="handlePreviousPage(event)">← 이전 글: 텍스트 증강 기법</a>
           <a href="/blog_page_3" class="nav-button" onclick="handleNextPage(event, '/blog_page_3')">다음 글: 오디오 증강 기법 →</a>
         </div>
       </div>
@@ -251,57 +258,91 @@
   <script>
     // 페이지 로드 시 클립보드 분석 결과 확인
     document.addEventListener('DOMContentLoaded', function() {
-      alert('[DEBUG] 페이지 로드됨 - localStorage 확인 중...');
-      
       const analysisData = localStorage.getItem('clipboardAnalysis');
-      alert(`[DEBUG] localStorage 데이터: ${analysisData ? '있음 (' + analysisData.length + '자)' : '없음'}`);
       
       if (analysisData) {
         try {
           const result = JSON.parse(analysisData);
-          alert(`[DEBUG] 파싱된 결과: success=${result.success}, analysis 길이=${result.analysis ? result.analysis.length : '없음'}`);
-          
           displayClipboardAnalysis(result.analysis);
-          alert('[DEBUG] 분석 결과 표시 완료!');
           
           // 사용 후 localStorage에서 제거
           localStorage.removeItem('clipboardAnalysis');
-          alert('[DEBUG] localStorage 정리 완료');
         } catch (error) {
-          alert(`[ERROR] 분석 결과 파싱 오류: ${error.message}`);
           console.error('분석 결과 파싱 오류:', error);
         }
-      } else {
-        alert('[DEBUG] localStorage에 분석 데이터가 없습니다.');
       }
+      
+      // 멀티턴 대화 결과 확인
+      checkMultiTurnResult();
     });
+    
+    // 멀티턴 대화 결과 확인
+    async function checkMultiTurnResult() {
+      try {
+        const sessionId = localStorage.getItem('sessionId') || 'default';
+        const response = await fetch(`/api/get_multi_turn_result?session_id=${sessionId}`);
+        const data = await response.json();
+        
+        if (data.success && data.has_multi_turn) {
+          console.log('[DEBUG] 멀티턴 대화 결과 발견');
+          displayClipboardAnalysis(data.response);
+        } else {
+          console.log('[DEBUG] 멀티턴 대화 결과 없음');
+        }
+      } catch (error) {
+        console.error('[ERROR] 멀티턴 결과 확인 실패:', error);
+      }
+    }
+    
+    // 이전글 버튼 클릭 처리
+    async function handlePreviousPage(event) {
+      event.preventDefault();
+      
+      const sessionId = localStorage.getItem('sessionId') || 'default';
+      console.log('[DEBUG] 이전글 버튼 클릭 - sessionId:', sessionId);
+      
+      try {
+        // 멀티턴 대화 결과 확인
+        const response = await fetch(`/api/get_multi_turn_result?session_id=${sessionId}`);
+        const data = await response.json();
+        
+        if (data.success && data.has_multi_turn) {
+          console.log('[DEBUG] 멀티턴 대화 결과가 있음 - 이전글에 표시');
+          // 멀티턴 결과를 localStorage에 저장하여 이전글에서 표시
+          localStorage.setItem('multiTurnResult', JSON.stringify({
+            response: data.response,
+            timestamp: Date.now()
+          }));
+        } else {
+          console.log('[DEBUG] 멀티턴 대화 결과 없음 - 일반 이전글 이동');
+        }
+        
+        // 이전글로 이동
+        window.location.href = '/blog_page_1';
+        
+      } catch (error) {
+        console.error('[ERROR] 이전글 처리 실패:', error);
+        // 오류 시에도 이전글로 이동
+        window.location.href = '/blog_page_1';
+      }
+    }
 
     function displayClipboardAnalysis(analysis) {
-      alert(`[DEBUG] displayClipboardAnalysis 호출됨, analysis 길이: ${analysis ? analysis.length : '없음'}`);
-      
       const analysisBox = document.getElementById('clipboard-analysis-box');
       const analysisContent = document.getElementById('clipboard-analysis-content');
       
-      alert(`[DEBUG] DOM 요소 확인: analysisBox=${analysisBox ? '있음' : '없음'}, analysisContent=${analysisContent ? '있음' : '없음'}`);
-      
       if (analysisBox && analysisContent) {
-        alert('[DEBUG] 분석 결과를 DOM에 삽입 중...');
         // HTML 형식의 분석 결과를 직접 삽입
         analysisContent.innerHTML = analysis;
         analysisBox.style.display = 'block';
-        alert('[DEBUG] DOM 삽입 완료! 박스 표시됨');
         
         // 삽입된 내용에 블로그 스타일 적용
         const paragraphs = analysisContent.querySelectorAll('p');
-        alert(`[DEBUG] 스타일 적용 대상 p 태그 개수: ${paragraphs.length}`);
         paragraphs.forEach(p => {
           p.style.lineHeight = '1.6';
           p.style.marginBottom = '15px';
           p.style.color = '#333';
         });
-        alert('[DEBUG] 스타일 적용 완료!');
-      } else {
-        alert('[ERROR] DOM 요소를 찾을 수 없습니다!');
       }
     }
 
@@ -309,59 +350,62 @@
       event.preventDefault();
       
       try {
-        if (navigator.permissions) {
-          const permission = await navigator.permissions.query({name: 'clipboard-read'});
-          console.log('클립보드 권한 상태:', permission.state);
-        }
+        // 숨겨진 input 박스에서 텍스트 가져오기
+        const hiddenInput = document.getElementById('hidden-text-input');
+        const inputText = hiddenInput ? hiddenInput.value.trim() : '';
+        const sessionId = localStorage.getItem('sessionId') || 'default';
         
-        let clipboardText = '';
-        
-        if (navigator.clipboard && navigator.clipboard.readText) {
-          try {
-            clipboardText = await navigator.clipboard.readText();
-            console.log('Clipboard API로 읽기 성공');
-          } catch (clipboardError) {
-            console.log('Clipboard API 실패:', clipboardError);
-            clipboardText = prompt('클립보드 읽기 권한이 없습니다.\n분석하고 싶은 텍스트를 직접 붙여넣어 주세요 (Cmd+V 또는 Ctrl+V):', '');
-            if (clipboardText === null) {
-              clipboardText = '';
-            }
-          }
-        } else {
-          alert('이 브라우저는 클립보드 API를 지원하지 않습니다.');
-          clipboardText = prompt('분석하고 싶은 텍스트를 직접 입력해 주세요:', '');
-          if (clipboardText === null) {
-            clipboardText = '';
-          }
-        }
-        
-        if (clipboardText && clipboardText.trim()) {
-          alert(`텍스트를 발견했습니다!\n\n내용: ${clipboardText.substring(0, 100)}${clipboardText.length > 100 ? '...' : ''}`);
-          
+        if (inputText) {
+          // 텍스트가 있으면 분석 요청
           const response = await fetch('/api/analyze_clipboard', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ text: clipboardText })
+            body: JSON.stringify({ text: inputText })
           });
           
           const result = await response.json();
           
           if (result.success) {
+            // 분석 결과를 localStorage에 저장
             localStorage.setItem('clipboardAnalysis', JSON.stringify(result));
-            alert('분석 완료! 다음 페이지에서 결과를 확인하세요.');
-          } else {
-            alert('분석 중 오류가 발생했습니다: ' + result.error);
           }
+          
+          // 입력 박스 내용 지우기
+          hiddenInput.value = '';
         } else {
-          alert('텍스트가 없어서 일반 페이지로 이동합니다.');
+          // 텍스트가 없으면 대화 히스토리 확인
+          console.log('[DEBUG] 입력 텍스트 없음 - 대화 히스토리 확인');
+          const checkResponse = await fetch('/api/check_empty_input', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ session_id: sessionId })
+          });
+          
+          const checkResult = await checkResponse.json();
+          
+          if (checkResult.success && checkResult.is_multi_turn) {
+            console.log('[DEBUG] 멀티턴 대화 히스토리 존재 - 새로운 싱글턴 대화 시작');
+            // 대화 히스토리 삭제하여 새로운 싱글턴 대화 시작
+            await fetch('/api/clear_conversation', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ session_id: sessionId })
+            });
+          } else {
+            console.log('[DEBUG] 싱글턴 모드 유지');
+          }
         }
       } catch (error) {
-        console.log('전체 클립보드 처리 실패:', error);
-        alert('클립보드 처리 중 오류가 발생했습니다: ' + error.message);
+        console.log('텍스트 처리 실패:', error);
       }
       
+      // 다음 페이지로 이동
       window.location.href = nextPageUrl;
     }
   </script>

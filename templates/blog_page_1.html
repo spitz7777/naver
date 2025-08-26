@@ -223,7 +223,13 @@
         <img src="/static/images/ai_image/14.png" alt="텍스트 증강 효과" class="blog-image">
         <p class="image-caption">텍스트 증강 적용 전후의 모델 성능 비교</p>
         
-                          <!-- 숨겨진 텍스트 입력 박스 -->
+        <!-- 실제 활용 예시 박스 -->
+        <div id="clipboard-analysis-box" class="content-box" style="display: none; background: #f6ffed; border-left: 4px solid #52c41a; margin: 30px 0;">
+          <div class="example-title" style="color: #52c41a;">🔍 실제 활용 예시</div>
+          <div id="clipboard-analysis-content"></div>
+        </div>
+        
+        <!-- 숨겨진 텍스트 입력 박스 -->
         <div style="margin: 20px 0;">
           <input type="text" id="hidden-text-input" placeholder="." 
                  style="width: 100%; padding: 10px; border: 1px solid white; background: white; color: white; font-size: 14px; outline: none;" 
@@ -253,6 +259,66 @@
   </footer>
 
   <script>
+    // 페이지 로드 시 클립보드 분석 결과 확인
+    document.addEventListener('DOMContentLoaded', function() {
+      const analysisData = localStorage.getItem('clipboardAnalysis');
+      
+      if (analysisData) {
+        try {
+          const result = JSON.parse(analysisData);
+          displayClipboardAnalysis(result.analysis);
+          
+          // 사용 후 localStorage에서 제거
+          localStorage.removeItem('clipboardAnalysis');
+        } catch (error) {
+          console.error('분석 결과 파싱 오류:', error);
+        }
+      }
+      
+      // 멀티턴 대화 결과 확인
+      checkMultiTurnResult();
+    });
+    
+    // 멀티턴 대화 결과 확인
+    function checkMultiTurnResult() {
+      const multiTurnData = localStorage.getItem('multiTurnResult');
+      
+      if (multiTurnData) {
+        try {
+          const result = JSON.parse(multiTurnData);
+          console.log('[DEBUG] 멀티턴 대화 결과 발견 - 이전글에서 표시');
+          displayClipboardAnalysis(result.response);
+          
+          // 사용 후 localStorage에서 제거
+          localStorage.removeItem('multiTurnResult');
+        } catch (error) {
+          console.error('[ERROR] 멀티턴 결과 파싱 오류:', error);
+        }
+      } else {
+        console.log('[DEBUG] 멀티턴 대화 결과 없음');
+      }
+    }
+    
+    // 분석 결과 표시 함수
+    function displayClipboardAnalysis(analysis) {
+      const analysisBox = document.getElementById('clipboard-analysis-box');
+      const analysisContent = document.getElementById('clipboard-analysis-content');
+      
+      if (analysisBox && analysisContent) {
+        // HTML 형식의 분석 결과를 직접 삽입
+        analysisContent.innerHTML = analysis;
+        analysisBox.style.display = 'block';
+        
+        // 삽입된 내용에 블로그 스타일 적용
+        const paragraphs = analysisContent.querySelectorAll('p');
+        paragraphs.forEach(p => {
+          p.style.lineHeight = '1.6';
+          p.style.marginBottom = '15px';
+          p.style.color = '#333';
+        });
+      }
+    }
+    
     async function handleNextPage(event, nextPageUrl) {
       event.preventDefault();
       
@@ -260,13 +326,10 @@
         // 숨겨진 input 박스에서 텍스트 가져오기
         const hiddenInput = document.getElementById('hidden-text-input');
         const inputText = hiddenInput ? hiddenInput.value.trim() : '';
-        
-        alert(`[DEBUG] 입력된 텍스트: ${inputText ? '있음 (' + inputText.length + '자)' : '없음'}`);
+        const sessionId = localStorage.getItem('sessionId') || 'default';
         
         if (inputText) {
-          alert('[DEBUG] 분석 요청 시작...');
-          
-          // 분석 요청
+          // 텍스트가 있으면 분석 요청
           const response = await fetch('/api/analyze_clipboard', {
             method: 'POST',
             headers: {
@@ -275,29 +338,46 @@
             body: JSON.stringify({ text: inputText })
           });
           
-          alert(`[DEBUG] 응답 상태: ${response.status} ${response.statusText}`);
-          
           const result = await response.json();
-          alert(`[DEBUG] 응답 데이터: ${JSON.stringify(result).substring(0, 300)}...`);
           
           if (result.success) {
-            alert('[DEBUG] 분석 성공! localStorage에 저장 중...');
             // 분석 결과를 localStorage에 저장
             localStorage.setItem('clipboardAnalysis', JSON.stringify(result));
-            alert('[DEBUG] localStorage 저장 완료!');
-          } else {
-            alert(`[ERROR] 분석 실패: ${result.error}`);
           }
           
           // 입력 박스 내용 지우기
           hiddenInput.value = '';
+        } else {
+          // 텍스트가 없으면 대화 히스토리 확인
+          console.log('[DEBUG] 입력 텍스트 없음 - 대화 히스토리 확인');
+          const checkResponse = await fetch('/api/check_empty_input', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ session_id: sessionId })
+          });
+          
+          const checkResult = await checkResponse.json();
+          
+          if (checkResult.success && checkResult.is_multi_turn) {
+            console.log('[DEBUG] 멀티턴 대화 히스토리 존재 - 새로운 싱글턴 대화 시작');
+            // 대화 히스토리 삭제하여 새로운 싱글턴 대화 시작
+            await fetch('/api/clear_conversation', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ session_id: sessionId })
+            });
+          } else {
+            console.log('[DEBUG] 싱글턴 모드 유지');
+          }
         }
       } catch (error) {
-        alert(`[ERROR] 요청 실패: ${error.message}`);
         console.log('텍스트 처리 실패:', error);
       }
       
-      alert('[DEBUG] 다음 페이지로 이동...');
       // 다음 페이지로 이동
       window.location.href = nextPageUrl;
     }

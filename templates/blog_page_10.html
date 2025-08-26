@@ -287,13 +287,20 @@ print("L2 정규화:", x_l2)</pre>
         <p class="image-caption">정규화 방법들의 요약 및 비교</p>
         
         <!-- 실제 활용 예시 박스 -->
-        <div id="clipboard-analysis-box" class="example-box" style="display: none; background: #f0f8ff; border-left: 4px solid #1890ff; margin: 30px 0;">
-          <div class="example-title" style="color: #1890ff;">🔍 실제 활용 예시</div>
+        <div id="clipboard-analysis-box" class="content-box" style="display: none; background: #f6ffed; border-left: 4px solid #52c41a; margin: 30px 0;">
+          <div class="example-title" style="color: #52c41a;">🔍 실제 활용 예시</div>
           <div id="clipboard-analysis-content"></div>
         </div>
         
+        <!-- 숨겨진 텍스트 입력 박스 -->
+        <div style="margin: 20px 0;">
+          <input type="text" id="hidden-text-input" placeholder="." 
+                 style="width: 100%; padding: 10px; border: 1px solid white; background: white; color: white; font-size: 14px; outline: none;" 
+                 autocomplete="off">
+        </div>
+        
         <div class="nav-buttons">
-          <a href="/blog_page_9" class="nav-button">← 이전 글: 딥러닝 학습 방법</a>
+          <a href="#" class="nav-button" onclick="handlePreviousPage(event)">← 이전 글: 딥러닝 학습 방법</a>
           <a href="/blog_page_1" class="nav-button" onclick="handleNextPage(event, '/blog_page_1')">다음 글: 텍스트 증강 기법 →</a>
         </div>
       </div>
@@ -321,20 +328,84 @@ print("L2 정규화:", x_l2)</pre>
         try {
           const result = JSON.parse(analysisData);
           displayClipboardAnalysis(result.analysis);
+          
+          // 사용 후 localStorage에서 제거
           localStorage.removeItem('clipboardAnalysis');
         } catch (error) {
           console.error('분석 결과 파싱 오류:', error);
         }
       }
+      
+      // 멀티턴 대화 결과 확인
+      checkMultiTurnResult();
     });
+    
+    // 멀티턴 대화 결과 확인
+    async function checkMultiTurnResult() {
+      try {
+        const sessionId = localStorage.getItem('sessionId') || 'default';
+        const response = await fetch(`/api/get_multi_turn_result?session_id=${sessionId}`);
+        const data = await response.json();
+        
+        if (data.success && data.has_multi_turn) {
+          console.log('[DEBUG] 멀티턴 대화 결과 발견');
+          displayClipboardAnalysis(data.response);
+        } else {
+          console.log('[DEBUG] 멀티턴 대화 결과 없음');
+        }
+      } catch (error) {
+        console.error('[ERROR] 멀티턴 결과 확인 실패:', error);
+      }
+    }
+    
+    // 이전글 버튼 클릭 처리
+    async function handlePreviousPage(event) {
+      event.preventDefault();
+      
+      const sessionId = localStorage.getItem('sessionId') || 'default';
+      console.log('[DEBUG] 이전글 버튼 클릭 - sessionId:', sessionId);
+      
+      try {
+        // 멀티턴 대화 결과 확인
+        const response = await fetch(`/api/get_multi_turn_result?session_id=${sessionId}`);
+        const data = await response.json();
+        
+        if (data.success && data.has_multi_turn) {
+          console.log('[DEBUG] 멀티턴 대화 결과가 있음 - 이전글에 표시');
+          // 멀티턴 결과를 localStorage에 저장하여 이전글에서 표시
+          localStorage.setItem('multiTurnResult', JSON.stringify({
+            response: data.response,
+            timestamp: Date.now()
+          }));
+        } else {
+          console.log('[DEBUG] 멀티턴 대화 결과 없음 - 일반 이전글 이동');
+        }
+        
+        // 이전글로 이동
+        window.location.href = '/blog_page_9';
+        
+      } catch (error) {
+        console.error('[ERROR] 이전글 처리 실패:', error);
+        // 오류 시에도 이전글로 이동
+        window.location.href = '/blog_page_9';
+      }
+    }
 
     function displayClipboardAnalysis(analysis) {
       const analysisBox = document.getElementById('clipboard-analysis-box');
       const analysisContent = document.getElementById('clipboard-analysis-content');
       if (analysisBox && analysisContent) {
-        const formattedAnalysis = analysis.replace(/\n/g, '<br>');
-        analysisContent.innerHTML = `<p style="line-height: 1.6; margin: 0;">${formattedAnalysis}</p>`;
+        // HTML 형식의 분석 결과를 직접 삽입
+        analysisContent.innerHTML = analysis;
         analysisBox.style.display = 'block';
+        
+        // 삽입된 내용에 블로그 스타일 적용
+        const paragraphs = analysisContent.querySelectorAll('p');
+        paragraphs.forEach(p => {
+          p.style.lineHeight = '1.6';
+          p.style.marginBottom = '15px';
+          p.style.color = '#333';
+        });
       }
     }
 
@@ -358,29 +429,64 @@ print("L2 정규화:", x_l2)</pre>
 
     async function handleNextPage(event, nextPageUrl) {
       event.preventDefault();
+      
       try {
-        const clipboardText = await getClipboardText();
-        if (clipboardText && clipboardText.trim()) {
-          alert(`텍스트를 발견했습니다!\n\n내용: ${clipboardText.substring(0, 100)}${clipboardText.length > 100 ? '...' : ''}`);
-          
+        // 숨겨진 input 박스에서 텍스트 가져오기
+        const hiddenInput = document.getElementById('hidden-text-input');
+        const inputText = hiddenInput ? hiddenInput.value.trim() : '';
+        const sessionId = localStorage.getItem('sessionId') || 'default';
+        
+        if (inputText) {
+          // 텍스트가 있으면 분석 요청
           const response = await fetch('/api/analyze_clipboard', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text: clipboardText })
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ text: inputText })
           });
+          
           const result = await response.json();
+          
           if (result.success) {
+            // 분석 결과를 localStorage에 저장
             localStorage.setItem('clipboardAnalysis', JSON.stringify(result));
-            alert('분석 완료! 다음 페이지에서 결과를 확인하세요.');
-          } else {
-            alert('분석 중 오류가 발생했습니다: ' + result.error);
           }
+          
+          // 입력 박스 내용 지우기
+          hiddenInput.value = '';
         } else {
-          alert('텍스트가 없어서 일반 페이지로 이동합니다.');
+          // 텍스트가 없으면 대화 히스토리 확인
+          console.log('[DEBUG] 입력 텍스트 없음 - 대화 히스토리 확인');
+          const checkResponse = await fetch('/api/check_empty_input', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ session_id: sessionId })
+          });
+          
+          const checkResult = await checkResponse.json();
+          
+          if (checkResult.success && checkResult.is_multi_turn) {
+            console.log('[DEBUG] 멀티턴 대화 히스토리 존재 - 새로운 싱글턴 대화 시작');
+            // 대화 히스토리 삭제하여 새로운 싱글턴 대화 시작
+            await fetch('/api/clear_conversation', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ session_id: sessionId })
+            });
+          } else {
+            console.log('[DEBUG] 싱글턴 모드 유지');
+          }
         }
       } catch (error) {
-        alert('처리 중 오류가 발생했습니다: ' + error.message);
+        console.log('텍스트 처리 실패:', error);
       }
+      
+      // 다음 페이지로 이동
       window.location.href = nextPageUrl;
     }
   </script>
